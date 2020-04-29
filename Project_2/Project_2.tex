@@ -1,0 +1,2111 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{Project\_2}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{tutorial-simulation-of-information-diffusion-in-social-networks}{%
+\section{Tutorial: Simulation of Information Diffusion in Social
+Networks}\label{tutorial-simulation-of-information-diffusion-in-social-networks}}
+
+Online Social Networks (OSNs) are ubiquitious in society and have in
+many ways transformed the very nature of human communication. They
+provide a unique opportunity to study human communication behavior and
+patterns. A particular phenomena of interest is ``information
+diffusion'' - that is, how does an idea spread throughout a network? Who
+are the key players that spread information? Can we predict how this
+information will continue spreading?
+
+We present a guide on information diffusion with two parts:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Building networks and understanding a basic epidemilogical model for
+  information diffusion
+\item
+  Understanding basic predictive models, such as Linear Threshold and
+  Independent Cascade
+\end{enumerate}
+
+    \hypertarget{part-1-random-networks-epidemiological-diffusion}{%
+\section{Part 1: Random Networks \& Epidemiological
+Diffusion}\label{part-1-random-networks-epidemiological-diffusion}}
+
+    \hypertarget{introduction}{%
+\subsection{Introduction}\label{introduction}}
+
+A cornerstone to understanding information diffusion is investigating
+different network structures. Because real social networks tend to be
+huge, random networks are often used in proxy of real data. The first
+random network was proposed by Erdos and Renyi in 1959. Since then,
+there has been significant progress in building models that feature more
+real-world properties. Social networks have two key properties: -
+Scale-Free - Community-Oriented
+
+Scale-Free means that the degrees do not follow any specific
+distribution; instead, certain nodes can have millions of connections.
+Community-Oriented means that there exist sub-``clusters'' in the graph
+that have higher-than-average connectivity within the cluster than
+outside the cluster.
+
+Two of the leading social network models are the Baradasi-Albert model
+(which is scale-free) and the Watts-Strogatz network (which displays the
+clustering properties).
+
+For our purposes, we're going to focus on the scale-free nature of
+networks. We will work through the following network types:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Erdos-Renyi
+\item
+  Stochastic Block Model
+\item
+  Exponential Distributed Degrees
+\item
+  Power-Law Distributed Degrees
+\item
+  Baradasi-Albert Model
+\end{enumerate}
+
+    \hypertarget{setup}{%
+\subsubsection{Setup}\label{setup}}
+
+Before getting started, we need to create the environment and set up
+some utility functions. This relies on the following non-standard
+packages: * graph\_tool * NumPy * Matplotlib
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{graph\PYZus{}tool} \PY{k}{as} \PY{n+nn}{gt} 
+\PY{k+kn}{from} \PY{n+nn}{graph\PYZus{}tool} \PY{k+kn}{import} \PY{n}{generation}\PY{p}{,} \PY{n}{draw}\PY{p}{,} \PY{n}{Graph}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{os} 
+\PY{k+kn}{import} \PY{n+nn}{copy}
+\PY{c+c1}{\PYZsh{}Required to get matplotlib and graph\PYZhy{}tool to play nice }
+\PY{n}{os}\PY{o}{.}\PY{n}{environ}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{KMP\PYZus{}DUPLICATE\PYZus{}LIB\PYZus{}OK}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{True}\PY{l+s+s1}{\PYZsq{}} 
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt} 
+\PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline 
+\PY{k+kn}{import} \PY{n+nn}{random} 
+
+\PY{n}{l} \PY{o}{=} \PY{l+m+mf}{0.01} \PY{c+c1}{\PYZsh{} vary between 0 (no connections) and 1 (all connected) }
+\PY{n}{n} \PY{o}{=} \PY{l+m+mi}{1000}  \PY{c+c1}{\PYZsh{} Number of Nodes }
+\PY{n}{c} \PY{o}{=} \PY{l+m+mi}{10} \PY{c+c1}{\PYZsh{} Communities (SBM Only)}
+
+\PY{c+c1}{\PYZsh{} Function used for community networks }
+\PY{k}{def} \PY{n+nf}{group\PYZus{}mem\PYZus{}prob}\PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{n}{b}\PY{p}{)}\PY{p}{:} 
+    \PY{k}{if} \PY{n}{a} \PY{o}{==} \PY{n}{b}\PY{p}{:} 
+        \PY{k}{return} \PY{l+m+mf}{0.995} \PY{c+c1}{\PYZsh{} Increase for tighter communities }
+    \PY{k}{else}\PY{p}{:} 
+        \PY{k}{return} \PY{l+m+mf}{0.005} \PY{c+c1}{\PYZsh{} increase for looser communities }
+
+\PY{c+c1}{\PYZsh{} Get graph positions using SFDP layouts with common parameters }
+\PY{k}{def} \PY{n+nf}{get\PYZus{}positions}\PY{p}{(}\PY{n}{graph}\PY{p}{)}\PY{p}{:} 
+    \PY{n}{pos} \PY{o}{=} \PY{n}{draw}\PY{o}{.}\PY{n}{sfdp\PYZus{}layout}\PY{p}{(}\PY{n}{graph}\PY{p}{,} \PY{n}{mu} \PY{o}{=} \PY{l+m+mf}{1.0}\PY{p}{,} \PY{n}{mu\PYZus{}p} \PY{o}{=} \PY{l+m+mf}{1.0}\PY{p}{,} 
+                           \PY{n}{gamma}\PY{o}{=}\PY{l+m+mf}{5.0}\PY{p}{,} \PY{n}{C}\PY{o}{=} \PY{l+m+mf}{5.0}\PY{p}{,} \PY{n}{p}\PY{o}{=}\PY{l+m+mf}{0.1}\PY{p}{,} \PY{n}{max\PYZus{}level}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{)}
+    \PY{k}{return} \PY{n}{pos} 
+
+\PY{c+c1}{\PYZsh{} Draw graph with thin edges and certain properties }
+\PY{c+c1}{\PYZsh{} Optionally specify an output file }
+\PY{c+c1}{\PYZsh{} Must specify to\PYZus{}file=True to get it to work with saving to file.  }
+\PY{k}{def} \PY{n+nf}{draw\PYZus{}graph}\PY{p}{(}\PY{n}{graph}\PY{p}{,} 
+               \PY{n}{pos} \PY{o}{=} \PY{k+kc}{None}\PY{p}{,} 
+               \PY{n}{to\PYZus{}file} \PY{o}{=} \PY{k+kc}{False}\PY{p}{,} 
+               \PY{n}{vertex\PYZus{}fill\PYZus{}color}\PY{o}{=}\PY{k+kc}{None}\PY{p}{,} 
+               \PY{n}{folder} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} 
+               \PY{n}{file}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{graph}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{:} 
+    \PY{n}{degs} \PY{o}{=} \PY{n}{graph}\PY{o}{.}\PY{n}{degree\PYZus{}property\PYZus{}map}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{out}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{degs}\PY{o}{.}\PY{n}{a} \PY{o}{=} \PY{l+m+mi}{2} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{degs}\PY{o}{.}\PY{n}{a}\PY{p}{)}
+    \PY{k}{if} \PY{n}{pos} \PY{o}{==} \PY{k+kc}{None}\PY{p}{:} 
+        \PY{n}{pos} \PY{o}{=} \PY{n}{get\PYZus{}positions}\PY{p}{(}\PY{n}{graph}\PY{p}{)} 
+    
+    \PY{k}{if} \PY{n}{folder} \PY{o}{!=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} 
+        \PY{n}{path} \PY{o}{=} \PY{n}{folder} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{/}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{file} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{.png}\PY{l+s+s2}{\PYZdq{}} 
+    \PY{k}{else}\PY{p}{:} 
+        \PY{n}{path} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{./}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{file} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{.png}\PY{l+s+s2}{\PYZdq{}}
+    \PY{k}{if} \PY{n}{to\PYZus{}file}\PY{p}{:} 
+        \PY{n}{draw}\PY{o}{.}\PY{n}{graph\PYZus{}draw}\PY{p}{(}\PY{n}{graph}\PY{p}{,} \PY{n}{output} \PY{o}{=} \PY{n}{path}\PY{p}{,} 
+                  \PY{n}{vertex\PYZus{}size} \PY{o}{=} \PY{n}{degs}\PY{p}{,}
+                  \PY{n}{vertex\PYZus{}fill\PYZus{}color} \PY{o}{=} \PY{n}{vertex\PYZus{}fill\PYZus{}color}\PY{p}{,} 
+                  \PY{n}{pos}\PY{o}{=}\PY{n}{pos}\PY{p}{,} \PY{n}{edge\PYZus{}color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{black}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{edge\PYZus{}pen\PYZus{}width}\PY{o}{=}\PY{l+m+mf}{0.08}\PY{p}{)}
+    \PY{k}{else}\PY{p}{:} 
+        \PY{n}{draw}\PY{o}{.}\PY{n}{graph\PYZus{}draw}\PY{p}{(}\PY{n}{graph}\PY{p}{,} \PY{n}{inline}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} 
+            \PY{n}{vertex\PYZus{}size} \PY{o}{=} \PY{n}{degs}\PY{p}{,}
+            \PY{n}{vertex\PYZus{}fill\PYZus{}color} \PY{o}{=} \PY{n}{vertex\PYZus{}fill\PYZus{}color}\PY{p}{,} 
+            \PY{n}{pos}\PY{o}{=}\PY{n}{pos}\PY{p}{,} \PY{n}{edge\PYZus{}color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{black}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{edge\PYZus{}pen\PYZus{}width}\PY{o}{=}\PY{l+m+mf}{0.08}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/Users/rajshrimali/anaconda3/lib/python3.7/site-
+packages/graph\_tool/draw/cairo\_draw.py:1494: RuntimeWarning: Error importing Gtk
+module: No module named 'gi'; GTK+ drawing will not work.
+  warnings.warn(msg, RuntimeWarning)
+    \end{Verbatim}
+
+    \hypertarget{erdos-renyi-graph}{%
+\subsubsection{Erdos-Renyi Graph}\label{erdos-renyi-graph}}
+
+The Erdos-Renyi graph is the simplest of random graphs. For all nodes
+\(n_i, n_j, 0 \le i, j \le N\), an edge is drawn between \(n_i\) and
+\(n_j\) with probability \(p\).
+
+Graph-Tool has a convininent method for making a random graph in such a
+format. We set up our edge probability as a poisson distribution of (n -
+1) (other nodes) * (l) (our probability) to get the ``mean'' degree, and
+specify the Erdos model for choosing partner nodes.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{erdos\PYZus{}renyi} \PY{o}{=} \PY{n}{generation}\PY{o}{.}\PY{n}{random\PYZus{}graph}\PY{p}{(}\PY{n}{n}\PY{p}{,} 
+                                      \PY{k}{lambda}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{poisson}\PY{p}{(}\PY{p}{(}\PY{n}{n}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)} \PY{o}{*} \PY{n}{l}\PY{p}{)}\PY{p}{,} 
+                                      \PY{n}{directed}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} 
+                                      \PY{n}{model}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{erdos}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)} 
+\PY{n}{draw\PYZus{}graph}\PY{p}{(}\PY{n}{erdos\PYZus{}renyi}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_6_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{stochastic-block-model}{%
+\subsubsection{Stochastic Block Model}\label{stochastic-block-model}}
+
+A Stochastic Block Model graph displays great community-like
+characteristics. graph-tool has a way to create these as well, with the
+parameter \(c\) controlling the number of groups.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{sbm}\PY{p}{,} \PY{n}{bm} \PY{o}{=} \PY{n}{generation}\PY{o}{.}\PY{n}{random\PYZus{}graph}\PY{p}{(}\PY{n}{n}\PY{p}{,} \PY{k}{lambda}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{poisson}\PY{p}{(}\PY{n}{c}\PY{p}{)}\PY{p}{,} 
+                           \PY{n}{directed} \PY{o}{=} \PY{k+kc}{False}\PY{p}{,} 
+                           \PY{n}{model}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{blockmodel}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} 
+                           \PY{n}{block\PYZus{}membership} \PY{o}{=} \PY{k}{lambda}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{randint}\PY{p}{(}\PY{n}{c}\PY{p}{)}\PY{p}{,} 
+                           \PY{n}{edge\PYZus{}probs} \PY{o}{=} \PY{n}{group\PYZus{}mem\PYZus{}prob}\PY{p}{)}
+\PY{n}{draw\PYZus{}graph}\PY{p}{(}\PY{n}{sbm}\PY{p}{,} \PY{n}{vertex\PYZus{}fill\PYZus{}color}\PY{o}{=}\PY{n}{bm}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_8_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{exponential-distribution}{%
+\subsubsection{Exponential
+Distribution}\label{exponential-distribution}}
+
+These are simply created to exhibit a few nodes with a large number of
+connections, but most with very few.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Exponential Dist. of Degrees }
+
+\PY{n}{exp\PYZus{}graph} \PY{o}{=} \PY{n}{generation}\PY{o}{.}\PY{n}{random\PYZus{}graph}\PY{p}{(}\PY{n}{n}\PY{p}{,} 
+                \PY{k}{lambda}\PY{p}{:} \PY{n+nb}{int}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{exponential}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{/}\PY{p}{(}\PY{n}{l}\PY{p}{)}\PY{p}{)}\PY{p}{)} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{,} 
+                \PY{n}{directed}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\PY{n}{draw\PYZus{}graph}\PY{p}{(}\PY{n}{exp\PYZus{}graph}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_10_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{watts-strogatz}{%
+\subsubsection{Watts-Strogatz}\label{watts-strogatz}}
+
+The Watts-Strogatz Model exhibits the small-world properties of
+real-life OSNs
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Creating a Watts\PYZhy{}Strogatz graph has the following steps }
+\PY{c+c1}{\PYZsh{} First, create a \PYZdq{}ring\PYZdq{} over your nodes. Each node is connected to k }
+\PY{c+c1}{\PYZsh{} (in our case, c) nearest neighbors. }
+\PY{c+c1}{\PYZsh{} Shortcut by replacing some edges; for each edge, with probability p, }
+\PY{c+c1}{\PYZsh{} replace it with a new edge with random choie of existing node. }
+\PY{c+c1}{\PYZsh{} generate circular graph first }
+\PY{n}{watts\PYZus{}strogtaz} \PY{o}{=} \PY{n}{generation}\PY{o}{.}\PY{n}{circular\PYZus{}graph}\PY{p}{(}\PY{n}{n}\PY{p}{,} \PY{n}{c}\PY{p}{,} \PY{n}{self\PYZus{}loops}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)} 
+\PY{n}{watts\PYZus{}strogtaz}\PY{o}{.}\PY{n}{set\PYZus{}fast\PYZus{}edge\PYZus{}removal}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)} 
+\PY{n}{remove\PYZus{}edges} \PY{o}{=} \PY{p}{[}\PY{p}{]} 
+\PY{n}{add\PYZus{}edges} \PY{o}{=} \PY{n+nb}{set}\PY{p}{(}\PY{p}{)}
+\PY{n}{edges} \PY{o}{=} \PY{n}{watts\PYZus{}strogtaz}\PY{o}{.}\PY{n}{get\PYZus{}edges}\PY{p}{(}\PY{p}{)}
+\PY{n}{v} \PY{o}{=} \PY{k+kc}{None}\PY{p}{;} 
+\PY{k}{for} \PY{n}{edge} \PY{o+ow}{in} \PY{n}{watts\PYZus{}strogtaz}\PY{o}{.}\PY{n}{edges}\PY{p}{(}\PY{p}{)}\PY{p}{:}      
+    \PY{c+c1}{\PYZsh{} with probability l, rewire }
+    \PY{k}{if} \PY{n}{random}\PY{o}{.}\PY{n}{random}\PY{p}{(}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{l+m+mf}{0.1}\PY{p}{:} 
+        \PY{n}{v} \PY{o}{=} \PY{n}{watts\PYZus{}strogtaz}\PY{o}{.}\PY{n}{vertex\PYZus{}index}\PY{p}{[}\PY{n}{edge}\PY{o}{.}\PY{n}{source}\PY{p}{(}\PY{p}{)}\PY{p}{]}
+        \PY{n}{remove\PYZus{}edges}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{edge}\PY{p}{)} 
+        \PY{n}{new\PYZus{}neighbor} \PY{o}{=} \PY{p}{(}\PY{n}{random}\PY{o}{.}\PY{n}{randint}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{n}\PY{p}{)} \PY{o}{+} \PY{n}{v}\PY{p}{)} \PY{o}{\PYZpc{}} \PY{n}{n}
+        \PY{k}{while} \PY{p}{(}\PY{n}{v}\PY{p}{,} \PY{n}{new\PYZus{}neighbor}\PY{p}{)} \PY{o+ow}{in} \PY{n}{add\PYZus{}edges} \PY{o+ow}{or} \PY{p}{(}\PY{n}{new\PYZus{}neighbor}\PY{p}{,} \PY{n}{v}\PY{p}{)} \PY{o+ow}{in} \PY{n}{add\PYZus{}edges}\PY{p}{:} 
+            \PY{n}{new\PYZus{}neighbor} \PY{o}{=} \PY{p}{(}\PY{n}{random}\PY{o}{.}\PY{n}{randint}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{n}\PY{p}{)} \PY{o}{+} \PY{n}{v}\PY{p}{)} \PY{o}{\PYZpc{}} \PY{n}{n}
+        \PY{n}{add\PYZus{}edges}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{p}{(}\PY{n}{v}\PY{p}{,} \PY{n}{new\PYZus{}neighbor}\PY{p}{)}\PY{p}{)}
+\PY{k}{for} \PY{n}{edge} \PY{o+ow}{in} \PY{n}{remove\PYZus{}edges}\PY{p}{:} 
+    \PY{n}{watts\PYZus{}strogtaz}\PY{o}{.}\PY{n}{remove\PYZus{}edge}\PY{p}{(}\PY{n}{edge}\PY{p}{)} 
+
+\PY{n}{watts\PYZus{}strogtaz}\PY{o}{.}\PY{n}{set\PYZus{}fast\PYZus{}edge\PYZus{}removal}\PY{p}{(}\PY{k+kc}{False}\PY{p}{)} 
+\PY{n}{watts\PYZus{}strogtaz}\PY{o}{.}\PY{n}{add\PYZus{}edge\PYZus{}list}\PY{p}{(}\PY{n}{add\PYZus{}edges}\PY{p}{)}
+
+\PY{n}{draw\PYZus{}graph}\PY{p}{(}\PY{n}{watts\PYZus{}strogtaz}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_12_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{barabasi-albert-model}{%
+\subsubsection{Barabasi-Albert Model}\label{barabasi-albert-model}}
+
+Graph-Tool contains a handy function, \texttt{price\_network} (which is
+a generalization of Barabasi-Albert) to create a random network. We
+simply specify the parameter \(n\) number of nodes and \(m\), the degree
+of newly added verticies before rewiring.
+
+The degree-distribution of Barabasi-Albert will also follow a power-law
+model.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Barabási–Albert is the go\PYZhy{}to for this  }
+\PY{n}{barabasi\PYZus{}albert} \PY{o}{=} \PY{n}{generation}\PY{o}{.}\PY{n}{price\PYZus{}network}\PY{p}{(}\PY{n}{n}\PY{p}{,} \PY{n}{m}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{directed}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\PY{n}{draw\PYZus{}graph}\PY{p}{(}\PY{n}{barabasi\PYZus{}albert}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_14_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{epidemiological-spreading}{%
+\subsection{Epidemiological Spreading}\label{epidemiological-spreading}}
+
+    \hypertarget{background}{%
+\subsubsection{Background}\label{background}}
+
+A common way to think about information spreading in social networks is
+through epidemiological parallels. The information is modeled as a
+disease, and the disease spreads through the network. There are several
+different epidemiological models Several Disease-Based Models - SI
+(Susceptible-Infected) - SIS (Susceptible-Infected-Susceptible) -
+\emph{SIR (Susceptible-Infected-Recovered)} - \textbf{SIRS
+(Susceptible-Infected-Recovered-Susceptible)} - SEIR
+(Susceptible-Exposed-Infected-Recovered) - S-SEIR - SCIR - irSIR - FSIR
+- ESIS
+
+This list is far from exhaustive. The italicized one, SIR, serves as the
+baseline for most of the more advanced models, while the bolded one,
+SIRS, is generally considered a more accurate representation of
+spreading. While the more advanced models each have their nuances
+tailored to information diffusion in OSNs, we focus on the basic SIRS
+model for simplicity and demonstrations' sake.
+
+    \hypertarget{sirs}{%
+\subsubsection{SIRS}\label{sirs}}
+
+The SIRS model has three variables.
+
+\begin{itemize}
+\tightlist
+\item
+  \(s\) is the proportion of individuals susceptible to infection
+\item
+  \(i\) is the proportion of individuals currently infected
+\item
+  \(r\) is the proportion of individuals who have recovered and are now
+  immune.
+\end{itemize}
+
+The model is controlled by three parameters
+
+\begin{itemize}
+\tightlist
+\item
+  \(\lambda\) controls the rate of susceptible individuals becoming
+  infected
+\item
+  \(\mu\) controls the rate of infected people recovering
+\item
+  \(\alpha\) controls the rate of recovered people becoming susceptible
+  again.
+\end{itemize}
+
+\[\begin{align} 
+    \frac{ds}{dt} &= -\lambda s i + \alpha r\\ 
+    \frac{di}{dt} &= \lambda i (1 - i) - \mu i \\ 
+    \frac{dr}{dt} &= \mu i - \alpha r 
+\end{align}\]
+
+Note that \[s + i + r = 1\]
+
+This proportion based model can easily be transformed into a
+numbers-based model by multiplying everything by \(N\).
+
+To port this model over to a graph, we can do the following:
+
+For every node, 1. If a patient is infected 1. Go over their neighbors.
+Infect each neighbor with probability \(\lambda\) 2. Recover them with
+probability \(\mu\) 2. If a patient is recovered, convert them to
+susceptible with probability \(\alpha\)
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{random} 
+\PY{k}{class} \PY{n+nc}{SIRS}\PY{p}{:} 
+    \PY{n}{S} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]} \PY{c+c1}{\PYZsh{} Susceptible are white }
+    \PY{n}{I} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]} \PY{c+c1}{\PYZsh{} Infected are Black }
+    \PY{n}{R} \PY{o}{=} \PY{p}{[}\PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]} \PY{c+c1}{\PYZsh{} Recovered are Grey +}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{graph}\PY{p}{,} \PY{o}{*}\PY{n}{args}\PY{p}{,} \PY{o}{*}\PY{o}{*}\PY{n}{kwargs}\PY{p}{)}\PY{p}{:} 
+        \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{} }
+\PY{l+s+sd}{        Set up the model. Creates an internal copy of the graph, }
+\PY{l+s+sd}{        and sets up maps to keep track of our parameters. }
+\PY{l+s+sd}{        }
+\PY{l+s+sd}{        Keep a state reference. }
+\PY{l+s+sd}{        \PYZsq{}\PYZsq{}\PYZsq{}}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{g} \PY{o}{=} \PY{n}{graph}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)} 
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{pos} \PY{o}{=} \PY{n}{get\PYZus{}positions}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{g}\PY{p}{)} 
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{lam} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{g}\PY{o}{.}\PY{n}{new\PYZus{}edge\PYZus{}property}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{double}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)} 
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{mu} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{g}\PY{o}{.}\PY{n}{new\PYZus{}vertex\PYZus{}property}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{double}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)} 
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{a} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{g}\PY{o}{.}\PY{n}{new\PYZus{}vertex\PYZus{}property}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{double}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)} 
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{state} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{g}\PY{o}{.}\PY{n}{new\PYZus{}vertex\PYZus{}property}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{vector\PYZlt{}double\PYZgt{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{vs} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{g}\PY{o}{.}\PY{n}{get\PYZus{}vertices}\PY{p}{(}\PY{p}{)} 
+    
+    \PY{k}{def} \PY{n+nf}{reset}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{o}{*}\PY{n}{args}\PY{p}{,} \PY{n}{lam} \PY{o}{=} \PY{l+m+mf}{0.1}\PY{p}{,} \PY{n}{mu} \PY{o}{=} \PY{l+m+mf}{0.05}\PY{p}{,} \PY{n}{a} \PY{o}{=} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{n}{infected\PYZus{}patients} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{o}{*}\PY{o}{*}\PY{n}{kwargs}\PY{p}{)}\PY{p}{:} 
+        \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{} }
+\PY{l+s+sd}{        Set Lambda, Mu, and Alpha to their starting states. }
+\PY{l+s+sd}{        Also, set up which patients are infected. }
+\PY{l+s+sd}{        \PYZsq{}\PYZsq{}\PYZsq{}}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{lam}\PY{o}{.}\PY{n}{a} \PY{o}{=} \PY{n}{lam}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{mu}\PY{o}{.}\PY{n}{a} \PY{o}{=} \PY{n}{mu} 
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{a}\PY{o}{.}\PY{n}{a} \PY{o}{=} \PY{n}{a} 
+        \PY{k}{for} \PY{n}{v} \PY{o+ow}{in} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{g}\PY{o}{.}\PY{n}{vertices}\PY{p}{(}\PY{p}{)}\PY{p}{:} 
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{state}\PY{p}{[}\PY{n}{v}\PY{p}{]} \PY{o}{=} \PY{n}{SIRS}\PY{o}{.}\PY{n}{S} 
+        \PY{k}{for} \PY{n}{patient} \PY{o+ow}{in} \PY{n}{infected\PYZus{}patients}\PY{p}{:} 
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{state}\PY{p}{[}\PY{n}{patient}\PY{p}{]} \PY{o}{=} \PY{n}{SIRS}\PY{o}{.}\PY{n}{I} 
+    
+    \PY{k}{def} \PY{n+nf}{infected}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{v}\PY{p}{)}\PY{p}{:} 
+        \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{} }
+\PY{l+s+sd}{        Returns [}
+\PY{l+s+sd}{            new\PYZus{}susceptible, }
+\PY{l+s+sd}{            new\PYZus{}infected, }
+\PY{l+s+sd}{            new\PYZus{}recovers }
+\PY{l+s+sd}{        ]}
+\PY{l+s+sd}{        \PYZsq{}\PYZsq{}\PYZsq{}}
+        \PY{c+c1}{\PYZsh{} try to infect edges }
+        \PY{n}{new\PYZus{}infects} \PY{o}{=} \PY{n+nb}{set}\PY{p}{(}\PY{p}{)} 
+        \PY{n}{new\PYZus{}recovers} \PY{o}{=} \PY{n+nb}{set}\PY{p}{(}\PY{p}{)} 
+        \PY{k}{for} \PY{n}{edge} \PY{o+ow}{in} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{g}\PY{o}{.}\PY{n}{get\PYZus{}out\PYZus{}edges}\PY{p}{(}\PY{n}{v}\PY{p}{)}\PY{p}{:} 
+            \PY{k}{if} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{state}\PY{p}{[}\PY{n}{edge}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]} \PY{o}{==} \PY{n}{SIRS}\PY{o}{.}\PY{n}{S}\PY{p}{:} \PY{c+c1}{\PYZsh{}if they are susceptible... }
+                \PY{k}{if} \PY{n}{random}\PY{o}{.}\PY{n}{random}\PY{p}{(}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{lam}\PY{p}{[}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{g}\PY{o}{.}\PY{n}{edge}\PY{p}{(}\PY{o}{*}\PY{n}{edge}\PY{p}{)}\PY{p}{]}\PY{p}{:} 
+                    \PY{n}{new\PYZus{}infects}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{edge}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+        \PY{k}{if} \PY{n}{random}\PY{o}{.}\PY{n}{random}\PY{p}{(}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{mu}\PY{p}{[}\PY{n}{v}\PY{p}{]}\PY{p}{:} 
+            \PY{n}{new\PYZus{}recovers}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{v}\PY{p}{)}
+        
+        \PY{k}{return} \PY{p}{[}\PY{n+nb}{set}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{new\PYZus{}infects}\PY{p}{,} \PY{n}{new\PYZus{}recovers}\PY{p}{]}
+    \PY{k}{def} \PY{n+nf}{susceptible}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{v}\PY{p}{)}\PY{p}{:} 
+        \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{} }
+\PY{l+s+sd}{        Returns [}
+\PY{l+s+sd}{            new\PYZus{}susceptible, }
+\PY{l+s+sd}{            new\PYZus{}infected, }
+\PY{l+s+sd}{            new\PYZus{}recovers }
+\PY{l+s+sd}{        ]}
+\PY{l+s+sd}{        \PYZsq{}\PYZsq{}\PYZsq{}}
+        \PY{k}{return} \PY{p}{[}\PY{n+nb}{set}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n+nb}{set}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n+nb}{set}\PY{p}{(}\PY{p}{)}\PY{p}{]}
+    \PY{k}{def} \PY{n+nf}{recovered}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{v}\PY{p}{)}\PY{p}{:} 
+        \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{} }
+\PY{l+s+sd}{        Returns [}
+\PY{l+s+sd}{            new\PYZus{}susceptible, }
+\PY{l+s+sd}{            new\PYZus{}infected, }
+\PY{l+s+sd}{            new\PYZus{}recovers}
+\PY{l+s+sd}{        ]}
+\PY{l+s+sd}{        \PYZsq{}\PYZsq{}\PYZsq{}}
+        \PY{n}{new\PYZus{}susceptibles} \PY{o}{=} \PY{n+nb}{set}\PY{p}{(}\PY{p}{)} 
+        \PY{k}{if} \PY{n}{random}\PY{o}{.}\PY{n}{random}\PY{p}{(}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{a}\PY{p}{[}\PY{n}{v}\PY{p}{]}\PY{p}{:} 
+            \PY{n}{new\PYZus{}susceptibles}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{v}\PY{p}{)} 
+        \PY{k}{return} \PY{p}{[}\PY{n}{new\PYZus{}susceptibles}\PY{p}{,} \PY{n+nb}{set}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n+nb}{set}\PY{p}{(}\PY{p}{)}\PY{p}{]}
+
+    \PY{k}{def} \PY{n+nf}{step}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} 
+        \PY{n}{new\PYZus{}infects} \PY{o}{=} \PY{n+nb}{set}\PY{p}{(}\PY{p}{)} 
+        \PY{n}{new\PYZus{}recovers} \PY{o}{=} \PY{n+nb}{set}\PY{p}{(}\PY{p}{)} 
+        \PY{n}{new\PYZus{}susceptibles} \PY{o}{=} \PY{n+nb}{set}\PY{p}{(}\PY{p}{)} 
+        \PY{k}{for} \PY{n}{v} \PY{o+ow}{in} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{vs}\PY{p}{:} 
+            \PY{k}{if} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{state}\PY{p}{[}\PY{n}{v}\PY{p}{]} \PY{o}{==} \PY{n}{SIRS}\PY{o}{.}\PY{n}{S}\PY{p}{:} 
+                \PY{n}{ns}\PY{p}{,} \PY{n}{ni}\PY{p}{,} \PY{n}{nr} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{susceptible}\PY{p}{(}\PY{n}{v}\PY{p}{)} 
+                \PY{n}{new\PYZus{}infects}\PY{o}{.}\PY{n}{update}\PY{p}{(}\PY{n}{ni}\PY{p}{)} 
+                \PY{n}{new\PYZus{}susceptibles}\PY{o}{.}\PY{n}{update}\PY{p}{(}\PY{n}{ns}\PY{p}{)} 
+                \PY{n}{new\PYZus{}recovers}\PY{o}{.}\PY{n}{update}\PY{p}{(}\PY{n}{nr}\PY{p}{)} 
+            \PY{k}{if} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{state}\PY{p}{[}\PY{n}{v}\PY{p}{]} \PY{o}{==} \PY{n}{SIRS}\PY{o}{.}\PY{n}{I}\PY{p}{:}
+                \PY{n}{ns}\PY{p}{,} \PY{n}{ni}\PY{p}{,} \PY{n}{nr} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{infected}\PY{p}{(}\PY{n}{v}\PY{p}{)} 
+                \PY{n}{new\PYZus{}infects}\PY{o}{.}\PY{n}{update}\PY{p}{(}\PY{n}{ni}\PY{p}{)} 
+                \PY{n}{new\PYZus{}susceptibles}\PY{o}{.}\PY{n}{update}\PY{p}{(}\PY{n}{ns}\PY{p}{)} 
+                \PY{n}{new\PYZus{}recovers}\PY{o}{.}\PY{n}{update}\PY{p}{(}\PY{n}{nr}\PY{p}{)} 
+
+            \PY{c+c1}{\PYZsh{} Recover people }
+            \PY{k}{if} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{state}\PY{p}{[}\PY{n}{v}\PY{p}{]} \PY{o}{==} \PY{n}{SIRS}\PY{o}{.}\PY{n}{R}\PY{p}{:} 
+                \PY{n}{ns}\PY{p}{,} \PY{n}{ni}\PY{p}{,} \PY{n}{nr} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{recovered}\PY{p}{(}\PY{n}{v}\PY{p}{)} 
+                \PY{n}{new\PYZus{}infects}\PY{o}{.}\PY{n}{update}\PY{p}{(}\PY{n}{ni}\PY{p}{)} 
+                \PY{n}{new\PYZus{}susceptibles}\PY{o}{.}\PY{n}{update}\PY{p}{(}\PY{n}{ns}\PY{p}{)} 
+                \PY{n}{new\PYZus{}recovers}\PY{o}{.}\PY{n}{update}\PY{p}{(}\PY{n}{nr}\PY{p}{)} 
+
+        \PY{k}{for} \PY{n}{v} \PY{o+ow}{in} \PY{n}{new\PYZus{}infects}\PY{p}{:} 
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{state}\PY{p}{[}\PY{n}{v}\PY{p}{]} \PY{o}{=} \PY{n}{SIRS}\PY{o}{.}\PY{n}{I} 
+        \PY{k}{for} \PY{n}{v} \PY{o+ow}{in} \PY{n}{new\PYZus{}recovers}\PY{p}{:} 
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{state}\PY{p}{[}\PY{n}{v}\PY{p}{]} \PY{o}{=} \PY{n}{SIRS}\PY{o}{.}\PY{n}{R} 
+        \PY{k}{for} \PY{n}{v} \PY{o+ow}{in} \PY{n}{new\PYZus{}susceptibles}\PY{p}{:} 
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{state}\PY{p}{[}\PY{n}{v}\PY{p}{]} \PY{o}{=} \PY{n}{SIRS}\PY{o}{.}\PY{n}{S} 
+        \PY{k}{return} \PY{n}{new\PYZus{}susceptibles}\PY{p}{,} \PY{n}{new\PYZus{}infects}\PY{p}{,} \PY{n}{new\PYZus{}recovers}
+    
+    \PY{k}{def} \PY{n+nf}{run}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{logging\PYZus{}handler}\PY{p}{,} \PY{o}{*}\PY{n}{args}\PY{p}{,} \PY{n}{steps} \PY{o}{=} \PY{l+m+mi}{100}\PY{p}{,} \PY{o}{*}\PY{o}{*}\PY{n}{kwargs}\PY{p}{)}\PY{p}{:} 
+        \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{} }
+\PY{l+s+sd}{        Logging Handler should setup and on a .log() call accept new\PYZus{}suseptible, new\PYZus{}infected, new\PYZus{}recovered. }
+\PY{l+s+sd}{        \PYZsq{}\PYZsq{}\PYZsq{}}
+        \PY{n}{logging\PYZus{}handler}\PY{o}{.}\PY{n}{setup}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{g}\PY{p}{,} \PY{n}{steps}\PY{p}{)} 
+        \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{steps}\PY{p}{)}\PY{p}{:} 
+            \PY{n}{logging\PYZus{}handler}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{i}\PY{p}{,} \PY{o}{*}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{step}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+    
+\PY{k}{class} \PY{n+nc}{LoggingHandler}\PY{p}{:} 
+    \PY{k}{def} \PY{n+nf}{setup}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{g}\PY{p}{,} \PY{n}{steps}\PY{p}{)}\PY{p}{:} 
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{g} \PY{o}{=} \PY{n}{g} 
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{d} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{steps}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)} 
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{counts} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{steps}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)} 
+    \PY{k}{def} \PY{n+nf}{log}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{s}\PY{p}{,} \PY{n}{new\PYZus{}sus}\PY{p}{,} \PY{n}{new\PYZus{}inf}\PY{p}{,} \PY{n}{new\PYZus{}rec}\PY{p}{)}\PY{p}{:} 
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{d}\PY{p}{[}\PY{n}{s}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{new\PYZus{}sus}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n+nb}{len}\PY{p}{(}\PY{n}{new\PYZus{}inf}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{d}\PY{p}{[}\PY{n}{s}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{new\PYZus{}inf}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n+nb}{len}\PY{p}{(}\PY{n}{new\PYZus{}rec}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{d}\PY{p}{[}\PY{n}{s}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{new\PYZus{}rec}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n+nb}{len}\PY{p}{(}\PY{n}{new\PYZus{}sus}\PY{p}{)}
+    
+    \PY{k}{def} \PY{n+nf}{plot}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{nodes}\PY{p}{,} \PY{n}{initial\PYZus{}infected}\PY{p}{,} \PY{n}{title}\PY{p}{)}\PY{p}{:} 
+        \PY{n}{counts} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{d}\PY{o}{.}\PY{n}{cumsum}\PY{p}{(}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)} 
+        \PY{n}{counts}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]} \PY{o}{+}\PY{o}{=} \PY{n}{nodes} 
+        \PY{n}{counts}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]} \PY{o}{\PYZhy{}}\PY{o}{=} \PY{n}{initial\PYZus{}infected}
+        \PY{n}{counts}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]} \PY{o}{+}\PY{o}{=} \PY{n}{initial\PYZus{}infected}
+        \PY{n}{dcounts} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{d} 
+        
+        \PY{n}{fig}\PY{p}{,} \PY{p}{(}\PY{n}{ax1}\PY{p}{,} \PY{n}{ax2}\PY{p}{)} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{nrows} \PY{o}{=} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{ncols} \PY{o}{=} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{)}\PY{p}{,} \PY{n}{constrained\PYZus{}layout}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{True}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)} 
+        \PY{n}{x} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{d}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{)} 
+        \PY{n}{ax1}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{counts}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{susceptible}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{ax1}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{counts}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{infected}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{ax1}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{counts}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{g\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{recovered}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{ax1}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+        \PY{n}{ax2}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{dcounts}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ds}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{ax2}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{dcounts}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{di}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{ax2}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{dcounts}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{g\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dr}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{ax2}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)} 
+
+        \PY{n}{fig}\PY{o}{.}\PY{n}{suptitle}\PY{p}{(}\PY{n}{title}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{16}\PY{p}{)}
+        \PY{n}{ax1}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Total S/I/R Counts}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)} 
+        \PY{n}{ax1}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Days}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)} 
+        \PY{n}{ax1}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Count}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)} 
+
+        \PY{n}{ax2}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Rates of Change of S/I/R}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{ax2}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Days}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)} 
+        \PY{n}{ax2}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Rate of Change (People/Day)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{;}
+        \PY{k}{return} \PY{n}{fig}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} We\PYZsq{}re ready to run our simulation }
+\PY{n}{sirs} \PY{o}{=} \PY{n}{SIRS}\PY{p}{(}\PY{n}{barabasi\PYZus{}albert}\PY{p}{)}
+\PY{n}{sirs}\PY{o}{.}\PY{n}{reset}\PY{p}{(}\PY{n}{lam} \PY{o}{=} \PY{l+m+mf}{0.1}\PY{p}{,} 
+           \PY{n}{mu} \PY{o}{=} \PY{l+m+mf}{0.05}\PY{p}{,} 
+           \PY{n}{a} \PY{o}{=} \PY{l+m+mf}{0.5}\PY{p}{,} 
+           \PY{n}{infected\PYZus{}patients} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{p}{)}
+\PY{n}{logger} \PY{o}{=} \PY{n}{LoggingHandler}\PY{p}{(}\PY{p}{)} 
+\PY{n}{sirs}\PY{o}{.}\PY{n}{run}\PY{p}{(}\PY{n}{logger}\PY{p}{,} \PY{l+m+mi}{100}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{logger}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{l+m+mi}{1000}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Infection Chart in Default SIRS Networked Simulation}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{;} 
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_20_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{incubated-sirs}{%
+\subsubsection{Incubated SIRS}\label{incubated-sirs}}
+
+We can easily introduce a slight twist to our model. Now, we modify the
+step() code. We create an ``incubation time'' - it takes a certain
+number of steps before infected individuals can be healed. In the
+results, we clearly see different behavior!
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{class} \PY{n+nc}{IncubationSIRS}\PY{p}{(}\PY{n}{SIRS}\PY{p}{)}\PY{p}{:} 
+    \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{} SIRS class that has an \PYZdq{}incubation time\PYZdq{} for infected nodes. }
+\PY{l+s+sd}{    Simply overrides the infected method and sets up another state variable. }
+\PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{o}{*}\PY{n}{args}\PY{p}{,} \PY{o}{*}\PY{o}{*}\PY{n}{kwargs}\PY{p}{)}\PY{p}{:} 
+        \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{o}{*}\PY{n}{args}\PY{p}{,} \PY{o}{*}\PY{o}{*}\PY{n}{kwargs}\PY{p}{)} 
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{inc\PYZus{}times} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{g}\PY{o}{.}\PY{n}{new\PYZus{}vertex\PYZus{}property}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{int}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)} 
+    
+    \PY{k}{def} \PY{n+nf}{infected}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{v}\PY{p}{)}\PY{p}{:} 
+        \PY{n}{new\PYZus{}sus}\PY{p}{,} \PY{n}{new\PYZus{}inf}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{infected}\PY{p}{(}\PY{n}{v}\PY{p}{)} 
+        \PY{c+c1}{\PYZsh{} set up incubation time for the new infections }
+        \PY{k}{for} \PY{n}{new\PYZus{}i} \PY{o+ow}{in} \PY{n}{new\PYZus{}inf}\PY{p}{:} 
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{inc\PYZus{}times}\PY{p}{[}\PY{n}{new\PYZus{}i}\PY{p}{]} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{new\PYZus{}inc\PYZus{}time}
+        \PY{n}{new\PYZus{}rec} \PY{o}{=} \PY{n+nb}{set}\PY{p}{(}\PY{p}{)} 
+        \PY{c+c1}{\PYZsh{} re\PYZhy{}do recovering logic }
+        \PY{k}{if} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{inc\PYZus{}times}\PY{p}{[}\PY{n}{v}\PY{p}{]} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{l+m+mi}{0} \PY{o+ow}{and} \PY{n}{random}\PY{o}{.}\PY{n}{random}\PY{p}{(}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{mu}\PY{p}{[}\PY{n}{v}\PY{p}{]}\PY{p}{:} 
+            \PY{n}{new\PYZus{}rec}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{v}\PY{p}{)} 
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{inc\PYZus{}times}\PY{p}{[}\PY{n}{v}\PY{p}{]} \PY{o}{\PYZhy{}}\PY{o}{=} \PY{l+m+mi}{1} 
+        \PY{k}{return} \PY{p}{[}\PY{n}{new\PYZus{}sus}\PY{p}{,} \PY{n}{new\PYZus{}inf}\PY{p}{,} \PY{n}{new\PYZus{}rec}\PY{p}{]}
+    \PY{k}{def} \PY{n+nf}{reset}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{o}{*}\PY{n}{args}\PY{p}{,} \PY{n}{new\PYZus{}inc\PYZus{}time} \PY{o}{=} \PY{l+m+mi}{14}\PY{p}{,} \PY{o}{*}\PY{o}{*}\PY{n}{kwargs}\PY{p}{)}\PY{p}{:} 
+        \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{reset}\PY{p}{(}\PY{o}{*}\PY{n}{args}\PY{p}{,} \PY{o}{*}\PY{o}{*}\PY{n}{kwargs}\PY{p}{)} 
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{new\PYZus{}inc\PYZus{}time} \PY{o}{=} \PY{n}{new\PYZus{}inc\PYZus{}time}
+        \PY{k}{for} \PY{n}{v} \PY{o+ow}{in} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{vs}\PY{p}{:} 
+            \PY{k}{if} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{state}\PY{p}{[}\PY{n}{v}\PY{p}{]} \PY{o}{==} \PY{n}{SIRS}\PY{o}{.}\PY{n}{I}\PY{p}{:} 
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{inc\PYZus{}times}\PY{p}{[}\PY{n}{v}\PY{p}{]} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{new\PYZus{}inc\PYZus{}time} 
+        
+\PY{n}{inc\PYZus{}sirs} \PY{o}{=} \PY{n}{IncubationSIRS}\PY{p}{(}\PY{n}{barabasi\PYZus{}albert}\PY{p}{)}
+\PY{n}{inc\PYZus{}sirs}\PY{o}{.}\PY{n}{reset}\PY{p}{(}\PY{n}{lam} \PY{o}{=} \PY{l+m+mf}{0.1}\PY{p}{,} 
+           \PY{n}{mu} \PY{o}{=} \PY{l+m+mf}{0.05}\PY{p}{,} 
+           \PY{n}{a} \PY{o}{=} \PY{l+m+mf}{0.5}\PY{p}{,} 
+           \PY{n}{infected\PYZus{}patients} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} 
+         \PY{n}{new\PYZus{}inc\PYZus{}time} \PY{o}{=} \PY{l+m+mi}{14}
+\PY{p}{)}
+\PY{n}{logger} \PY{o}{=} \PY{n}{LoggingHandler}\PY{p}{(}\PY{p}{)} 
+\PY{n}{inc\PYZus{}sirs}\PY{o}{.}\PY{n}{run}\PY{p}{(}\PY{n}{logger}\PY{p}{,} \PY{l+m+mi}{100}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{logger}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{l+m+mi}{1000}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SIRS with Incubation Time}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{;} 
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_23_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{part-2-predictive-models}{%
+\section{Part 2: Predictive Models}\label{part-2-predictive-models}}
+
+    \hypertarget{independent-cascade-model}{%
+\subsubsection{Independent Cascade
+Model}\label{independent-cascade-model}}
+
+The independent cascade model is used to describe diffusion of
+information through a weighted graph network. For a social media
+network, each person can be considered a node, and edges between people
+are connections in the social media network (for example, friends on
+Facebook). Modeling the predicted spread of influence in a social media
+network allows us to potentially identify several important factors,
+such as how information will propagate through the network and which
+nodes are most important in spreading the information. This has many
+potential applications in advertising and marketing.
+
+When a node becomes active in this model, it is given a single chance to
+activate each of its currently inactive neighboring nodes. If it fails
+to do so, then it will not be able to activate that node ever again. The
+probability of this propagation is defined in the edge between these
+nodes. If activation of a neighboring node is successful, then the
+neighbor will become active at the next timestep. This can begin a
+continuous propagation known as a ``cascade.''
+
+We start with a small subset of initially active nodes, which are called
+seed nodes. From here, the network continues propagating for either a
+set number of steps or until no more nodes can be activated.
+
+    \hypertarget{independent-cascade}{%
+\paragraph{Independent Cascade}\label{independent-cascade}}
+
+    The class-based implementation below allows you to pass in a graph
+network of your choice, as well as a selection of seed nodes and number
+of steps. The diffuse method will continue running either for the
+specified number of steps or until new activation is not possible.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{class} \PY{n+nc}{IndependentCascade}\PY{p}{:}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{graph}\PY{p}{,} \PY{n}{seed\PYZus{}nodes}\PY{p}{,} \PY{n}{steps}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{:}
+        \PY{k}{for} \PY{n}{node} \PY{o+ow}{in} \PY{n}{seed\PYZus{}nodes}\PY{p}{:}
+            \PY{k}{if} \PY{n}{node} \PY{o+ow}{not} \PY{o+ow}{in} \PY{n}{graph}\PY{o}{.}\PY{n}{vertices}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+                \PY{k}{raise} \PY{n+ne}{Exception}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Seed node }\PY{l+s+si}{\PYZob{}node\PYZcb{}}\PY{l+s+s2}{ not in graph}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{g} \PY{o}{=} \PY{n}{Graph}\PY{p}{(}\PY{n}{graph}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}directed}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{seed\PYZus{}nodes} \PY{o}{=} \PY{n}{seed\PYZus{}nodes}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{steps} \PY{o}{=} \PY{n}{steps}
+
+    \PY{k}{def} \PY{n+nf}{diffuse}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+        \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Returns the active nodes of each diffusion step by the independent cascade model}
+
+\PY{l+s+sd}{        Parameters}
+\PY{l+s+sd}{        \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{        graph: graph\PYZus{}tool graph}
+\PY{l+s+sd}{        seed\PYZus{}nodes: list of nodes in the graph to start diffusion}
+\PY{l+s+sd}{        steps: integer for number of steps to run diffusion}
+
+\PY{l+s+sd}{        Returns}
+\PY{l+s+sd}{        \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{        layer\PYZus{}i\PYZus{}nodes: list of list of activated nodes}
+\PY{l+s+sd}{            layer\PYZus{}i\PYZus{}nodes[0]: seed\PYZus{}nodes}
+\PY{l+s+sd}{            layer\PYZus{}i\PYZus{}nodes[k]: nodes activated at kth diffusion step}
+\PY{l+s+sd}{        }
+\PY{l+s+sd}{        \PYZdq{}\PYZdq{}\PYZdq{}}
+        \PY{n}{a} \PY{o}{=} \PY{p}{[}\PY{n}{s} \PY{k}{for} \PY{n}{s} \PY{o+ow}{in} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{seed\PYZus{}nodes}\PY{p}{]}
+        \PY{k}{if} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{steps} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{l+m+mi}{0}\PY{p}{:}
+            \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}diffuse\PYZus{}all}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+        \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}diffuse\PYZus{}k\PYZus{}rounds}\PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{steps}\PY{p}{)}
+
+    \PY{k}{def} \PY{n+nf}{\PYZus{}diffuse\PYZus{}all}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{a}\PY{p}{)}\PY{p}{:}
+        \PY{n}{tried\PYZus{}edges} \PY{o}{=} \PY{n+nb}{set}\PY{p}{(}\PY{p}{)}
+        \PY{n}{layer\PYZus{}i\PYZus{}nodes} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+        \PY{n}{layer\PYZus{}i\PYZus{}nodes}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{[}\PY{n}{i} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{a}\PY{p}{]}\PY{p}{)}
+        \PY{k}{while} \PY{k+kc}{True}\PY{p}{:}
+            \PY{n}{len\PYZus{}old} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+            \PY{n}{a}\PY{p}{,} \PY{n}{activated\PYZus{}nodes}\PY{p}{,} \PY{n}{curr\PYZus{}tried\PYZus{}edges} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}diffuse\PYZus{}one\PYZus{}round}\PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{n}{tried\PYZus{}edges}\PY{p}{)}
+            \PY{n}{layer\PYZus{}i\PYZus{}nodes}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{activated\PYZus{}nodes}\PY{p}{)}
+            \PY{n}{tried\PYZus{}edges} \PY{o}{=} \PY{n}{tried\PYZus{}edges}\PY{o}{.}\PY{n}{union}\PY{p}{(}\PY{n}{curr\PYZus{}tried\PYZus{}edges}\PY{p}{)}
+            \PY{k}{if} \PY{n+nb}{len}\PY{p}{(}\PY{n}{a}\PY{p}{)} \PY{o}{==} \PY{n}{len\PYZus{}old}\PY{p}{:}
+                \PY{k}{break}
+        \PY{k}{return} \PY{n}{layer\PYZus{}i\PYZus{}nodes}
+
+    \PY{k}{def} \PY{n+nf}{\PYZus{}diffuse\PYZus{}k\PYZus{}rounds}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{n}{steps}\PY{p}{)}\PY{p}{:}
+        \PY{n}{tried\PYZus{}edges} \PY{o}{=} \PY{n+nb}{set}\PY{p}{(}\PY{p}{)}
+        \PY{n}{layer\PYZus{}i\PYZus{}nodes} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+        \PY{n}{layer\PYZus{}i\PYZus{}nodes}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{[}\PY{n}{i} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{a}\PY{p}{]}\PY{p}{)}
+        \PY{k}{while} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{steps} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0} \PY{o+ow}{and} \PY{n+nb}{len}\PY{p}{(}\PY{n}{a}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{n+nb}{len}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{g}\PY{o}{.}\PY{n}{nodes}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+            \PY{n}{len\PYZus{}old} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+            \PY{n}{a}\PY{p}{,} \PY{n}{activated\PYZus{}nodes}\PY{p}{,} \PY{n}{curr\PYZus{}tried\PYZus{}edges} \PY{o}{=} \PY{n}{\PYZus{}diffuse\PYZus{}one\PYZus{}round}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{g}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{n}{tried\PYZus{}edges}\PY{p}{)}
+            \PY{n}{layer\PYZus{}i\PYZus{}nodes}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{activated\PYZus{}nodes}\PY{p}{)}
+            \PY{n}{tried\PYZus{}edges} \PY{o}{=} \PY{n}{tried\PYZus{}edges}\PY{o}{.}\PY{n}{union}\PY{p}{(}\PY{n}{curr\PYZus{}tried\PYZus{}edges}\PY{p}{)}
+            \PY{k}{if} \PY{n+nb}{len}\PY{p}{(}\PY{n}{a}\PY{p}{)} \PY{o}{==} \PY{n}{len\PYZus{}old}\PY{p}{:}
+                \PY{k}{break}
+            \PY{n}{steps} \PY{o}{\PYZhy{}}\PY{o}{=} \PY{l+m+mi}{1}
+        \PY{k}{return} \PY{n}{layer\PYZus{}i\PYZus{}nodes}
+
+    \PY{k}{def} \PY{n+nf}{\PYZus{}diffuse\PYZus{}one\PYZus{}round}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{n}{tried\PYZus{}edges}\PY{p}{)}\PY{p}{:}
+        \PY{n}{activated\PYZus{}nodes} \PY{o}{=} \PY{n+nb}{set}\PY{p}{(}\PY{p}{)}
+        \PY{n}{curr\PYZus{}tried\PYZus{}edges} \PY{o}{=} \PY{n+nb}{set}\PY{p}{(}\PY{p}{)}
+        \PY{k}{for} \PY{n}{node} \PY{o+ow}{in} \PY{n}{a}\PY{p}{:}
+            \PY{k}{for} \PY{n}{nb} \PY{o+ow}{in} \PY{n}{node}\PY{o}{.}\PY{n}{out\PYZus{}neighbors}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+                \PY{k}{if} \PY{n}{nb} \PY{o+ow}{in} \PY{n}{a} \PY{o+ow}{or} \PY{p}{(}\PY{n}{node}\PY{p}{,} \PY{n}{nb}\PY{p}{)} \PY{o+ow}{in} \PY{n}{tried\PYZus{}edges} \PY{o+ow}{or} \PY{p}{(}\PY{n}{node}\PY{p}{,} \PY{n}{nb}\PY{p}{)} \PY{o+ow}{in} \PY{n}{curr\PYZus{}tried\PYZus{}edges}\PY{p}{:}
+                    \PY{k}{continue}
+                \PY{k}{if} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}prop\PYZus{}success}\PY{p}{(}\PY{n}{node}\PY{p}{,} \PY{n}{nb}\PY{p}{)}\PY{p}{:}
+                    \PY{n}{activated\PYZus{}nodes}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{nb}\PY{p}{)}
+                \PY{n}{curr\PYZus{}tried\PYZus{}edges}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{p}{(}\PY{n}{node}\PY{p}{,} \PY{n}{nb}\PY{p}{)}\PY{p}{)}
+        \PY{n}{activated\PYZus{}nodes} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{activated\PYZus{}nodes}\PY{p}{)}
+        \PY{n}{a}\PY{o}{.}\PY{n}{extend}\PY{p}{(}\PY{n}{activated\PYZus{}nodes}\PY{p}{)}
+        \PY{k}{return} \PY{n}{a}\PY{p}{,} \PY{n}{activated\PYZus{}nodes}\PY{p}{,} \PY{n}{curr\PYZus{}tried\PYZus{}edges}
+
+    \PY{k}{def} \PY{n+nf}{\PYZus{}prop\PYZus{}success}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{src}\PY{p}{,} \PY{n}{dest}\PY{p}{)}\PY{p}{:}
+        \PY{n}{edge} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{g}\PY{o}{.}\PY{n}{edge}\PY{p}{(}\PY{n}{src}\PY{p}{,} \PY{n}{dest}\PY{p}{)}
+        \PY{k}{if} \PY{n}{edge} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{:}
+            \PY{k}{return} \PY{k+kc}{False}
+        \PY{k}{return} \PY{n}{random}\PY{o}{.}\PY{n}{random}\PY{p}{(}\PY{p}{)} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{l+m+mf}{0.5}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{visualizing-spread-of-ic-in-different-networks}{%
+\paragraph{Visualizing spread of IC in different
+networks}\label{visualizing-spread-of-ic-in-different-networks}}
+
+    We run the information cascade model on the Barabasi-Albert and SBM
+graphs below. We randomly select 100 seed nodes and run until no more
+nodes can be activated. Then, observe the graph plots of active and
+inactive nodes (red and blue, respectively). We can see the activation
+of cascades based on the probabilities (we chose a universal 0.5
+probability of spread).
+
+We can also observe the differences in cascades between the two
+networks. In the Barabasi-Albert graph, the cascades do not live as long
+as in the SBM network, likely due to lower connectivity. The SBM graph
+sees a higher jump in initial activation, and a much higher percentage
+of the nodes are activated before stopping. The community-oriented
+nature and higher connectedness of the latter likely play a role in
+this.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{graph\PYZus{}spread}\PY{p}{(}\PY{n}{g}\PY{p}{)}\PY{p}{:}
+    \PY{n}{activation\PYZus{}probs} \PY{o}{=} \PY{n}{g}\PY{o}{.}\PY{n}{new\PYZus{}edge\PYZus{}property}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{double}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{activation\PYZus{}probs}\PY{o}{.}\PY{n}{set\PYZus{}value}\PY{p}{(}\PY{l+m+mf}{0.5}\PY{p}{)}
+    
+    \PY{n}{num\PYZus{}seeds} \PY{o}{=} \PY{l+m+mi}{50}
+    \PY{n}{seed\PYZus{}nodes} \PY{o}{=} \PY{n}{random}\PY{o}{.}\PY{n}{choices}\PY{p}{(}\PY{p}{[}\PY{n}{n} \PY{k}{for} \PY{n}{n} \PY{o+ow}{in} \PY{n}{g}\PY{o}{.}\PY{n}{vertices}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{p}{,} \PY{n}{k}\PY{o}{=}\PY{n}{num\PYZus{}seeds}\PY{p}{)}
+    \PY{n}{ic} \PY{o}{=} \PY{n}{IndependentCascade}\PY{p}{(}\PY{n}{g}\PY{p}{,} \PY{n}{seed\PYZus{}nodes}\PY{p}{)}
+    \PY{n}{layer\PYZus{}i\PYZus{}nodes} \PY{o}{=} \PY{n}{ic}\PY{o}{.}\PY{n}{diffuse}\PY{p}{(}\PY{p}{)}
+
+    \PY{n}{active} \PY{o}{=} \PY{n}{g}\PY{o}{.}\PY{n}{new\PYZus{}vertex\PYZus{}property}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{vector\PYZlt{}double\PYZgt{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{k}{for} \PY{n}{node} \PY{o+ow}{in} \PY{n}{g}\PY{o}{.}\PY{n}{vertices}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+        \PY{n}{active}\PY{p}{[}\PY{n}{node}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}
+    \PY{k}{for} \PY{n}{step} \PY{o+ow}{in} \PY{n}{layer\PYZus{}i\PYZus{}nodes}\PY{p}{:}
+        \PY{k}{for} \PY{n}{node} \PY{o+ow}{in} \PY{n}{g}\PY{o}{.}\PY{n}{vertices}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+            \PY{k}{if} \PY{n}{node} \PY{o+ow}{in} \PY{n}{step}\PY{p}{:}
+                \PY{n}{active}\PY{p}{[}\PY{n}{node}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}
+            \PY{c+c1}{\PYZsh{} else:}
+            \PY{c+c1}{\PYZsh{}     active[node] = (0,0,1,1)}
+        \PY{n}{draw\PYZus{}graph}\PY{p}{(}\PY{n}{g}\PY{p}{,} \PY{n}{vertex\PYZus{}fill\PYZus{}color}\PY{o}{=}\PY{n}{active}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \textbf{Barabasi-Albert}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{graph\PYZus{}spread}\PY{p}{(}\PY{n}{barabasi\PYZus{}albert}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \textbf{SBM}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{graph\PYZus{}spread}\PY{p}{(}\PY{n}{sbm}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{volume-of-diffusion-by-network}{%
+\paragraph{Volume of Diffusion by
+Network}\label{volume-of-diffusion-by-network}}
+
+    We can also compare the volume of activation between different graph
+types assuming an information cascade model of spread. We run the IC
+model for each type, with the same number of randomly sampled seeds and
+identical probabilities of infection, and plot the number of activated
+nodes over time. The Barabasi-Albert network increases at first, but
+caps out very quickly. The other networks all see more diffusion before
+stopping. This is likely because the community-oriented networks offer
+morer opportunities for a node to infect neighboring nodes in its
+cluster, which is supported by the SBM and Watts-Strogatz graphs seeing
+the most activation of new nodes.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{graphs} \PY{o}{=} \PY{p}{[}\PY{n}{barabasi\PYZus{}albert}\PY{p}{,} \PY{n}{sbm}\PY{p}{,} \PY{n}{erdos\PYZus{}renyi}\PY{p}{,} \PY{n}{watts\PYZus{}strogtaz}\PY{p}{]}
+\PY{n}{graphs\PYZus{}data} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{k}{for} \PY{n}{gr} \PY{o+ow}{in} \PY{n}{graphs}\PY{p}{:}
+    \PY{n}{g} \PY{o}{=} \PY{n}{gr}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+    \PY{n}{activation\PYZus{}probs} \PY{o}{=} \PY{n}{g}\PY{o}{.}\PY{n}{new\PYZus{}edge\PYZus{}property}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{double}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{activation\PYZus{}probs}\PY{o}{.}\PY{n}{set\PYZus{}value}\PY{p}{(}\PY{l+m+mf}{0.5}\PY{p}{)}
+    \PY{n}{num\PYZus{}seeds} \PY{o}{=} \PY{l+m+mi}{200}
+
+    \PY{n}{seed\PYZus{}nodes} \PY{o}{=} \PY{n}{random}\PY{o}{.}\PY{n}{choices}\PY{p}{(}\PY{p}{[}\PY{n}{n} \PY{k}{for} \PY{n}{n} \PY{o+ow}{in} \PY{n}{g}\PY{o}{.}\PY{n}{vertices}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{p}{,} \PY{n}{k}\PY{o}{=}\PY{n}{num\PYZus{}seeds}\PY{p}{)}
+    \PY{n}{ic} \PY{o}{=} \PY{n}{IndependentCascade}\PY{p}{(}\PY{n}{g}\PY{p}{,} \PY{n}{seed\PYZus{}nodes}\PY{p}{)}
+    \PY{n}{layer\PYZus{}i\PYZus{}nodes} \PY{o}{=} \PY{n}{ic}\PY{o}{.}\PY{n}{diffuse}\PY{p}{(}\PY{p}{)}
+    \PY{n}{total\PYZus{}activated} \PY{o}{=} \PY{l+m+mi}{0}
+    \PY{n}{actives} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{layer\PYZus{}i\PYZus{}nodes}\PY{p}{:}
+        \PY{n}{total\PYZus{}activated} \PY{o}{+}\PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{i}\PY{p}{)}
+        \PY{n}{actives}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{total\PYZus{}activated}\PY{p}{)}
+    \PY{n}{graphs\PYZus{}data}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{actives}\PY{p}{)}
+
+\PY{n}{max\PYZus{}len} \PY{o}{=} \PY{n+nb}{max}\PY{p}{(}\PY{p}{[}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x}\PY{p}{)} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{graphs\PYZus{}data}\PY{p}{]}\PY{p}{)}
+\PY{k}{for} \PY{n}{d} \PY{o+ow}{in} \PY{n}{graphs\PYZus{}data}\PY{p}{:}
+    \PY{n}{diff} \PY{o}{=} \PY{n}{max\PYZus{}len} \PY{o}{\PYZhy{}} \PY{n+nb}{len}\PY{p}{(}\PY{n}{d}\PY{p}{)}
+    \PY{k}{while} \PY{n}{diff} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{:}
+        \PY{n}{d}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{d}\PY{p}{[}\PY{n+nb}{len}\PY{p}{(}\PY{n}{d}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+        \PY{n}{diff} \PY{o}{\PYZhy{}}\PY{o}{=} \PY{l+m+mi}{1}
+
+\PY{n}{x} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{max\PYZus{}len}\PY{p}{)}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{graphs\PYZus{}data}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{c}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{r}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{graphs\PYZus{}data}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{c}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{b}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{graphs\PYZus{}data}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,} \PY{n}{c}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{k}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{graphs\PYZus{}data}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{,} \PY{n}{c}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{g}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Timestep}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of active nodes (cumulative)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}yticks}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mf}{5.5}\PY{o}{*}\PY{n}{num\PYZus{}seeds}\PY{p}{,} \PY{n}{step}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Time evolution of activation in Independent Cascade models}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Barabasi\PYZhy{}Albert}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SBM}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Erdos Renyi}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Watts\PYZhy{}Strogatz}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/Users/rajshrimali/anaconda3/lib/python3.7/site-
+packages/ipykernel\_launcher.py:37: UserWarning: Matplotlib is currently using
+module://ipykernel.pylab.backend\_inline, which is a non-GUI backend, so cannot
+show the figure.
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_38_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{volume-of-diffusion-by-number-of-seed-nodes}{%
+\paragraph{Volume of Diffusion by Number of Seed
+Nodes}\label{volume-of-diffusion-by-number-of-seed-nodes}}
+
+    We might also be interested in how the decision of the number of seed
+nodes affects the diffusion of information. We can observe this by
+choosing a single graph network at a time and selecting different seed
+sizes (10, 50, 100, 250). When we run this, we can see that selecting a
+greater number of seed nodes leads to higher diffusion. This effect is
+actually present in both networks, suggesting that seed node size
+affects different networks similarly.
+
+However, what if have a limited number of seed nodes to choose, but want
+to maximize diffusion? This is an NP-hard problem, and can be further
+explored in the Influence Maximization section.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{seed\PYZus{}spread}\PY{p}{(}\PY{n}{g}\PY{p}{)}\PY{p}{:}
+    \PY{n}{seeds} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{50}\PY{p}{,} \PY{l+m+mi}{100}\PY{p}{,} \PY{l+m+mi}{250}\PY{p}{]}
+    \PY{n}{seeds\PYZus{}data} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{k}{for} \PY{n}{s} \PY{o+ow}{in} \PY{n}{seeds}\PY{p}{:}
+        \PY{n}{activation\PYZus{}probs} \PY{o}{=} \PY{n}{g}\PY{o}{.}\PY{n}{new\PYZus{}edge\PYZus{}property}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{double}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{activation\PYZus{}probs}\PY{o}{.}\PY{n}{set\PYZus{}value}\PY{p}{(}\PY{l+m+mf}{0.5}\PY{p}{)}
+
+        \PY{n}{seed\PYZus{}nodes} \PY{o}{=} \PY{n}{random}\PY{o}{.}\PY{n}{choices}\PY{p}{(}\PY{p}{[}\PY{n}{n} \PY{k}{for} \PY{n}{n} \PY{o+ow}{in} \PY{n}{g}\PY{o}{.}\PY{n}{vertices}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{p}{,} \PY{n}{k}\PY{o}{=}\PY{n}{s}\PY{p}{)}
+        \PY{n}{ic} \PY{o}{=} \PY{n}{IndependentCascade}\PY{p}{(}\PY{n}{g}\PY{p}{,} \PY{n}{seed\PYZus{}nodes}\PY{p}{)}
+        \PY{n}{layer\PYZus{}i\PYZus{}nodes} \PY{o}{=} \PY{n}{ic}\PY{o}{.}\PY{n}{diffuse}\PY{p}{(}\PY{p}{)}
+        \PY{n}{total\PYZus{}activated} \PY{o}{=} \PY{l+m+mi}{0}
+        \PY{n}{actives} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+        \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{layer\PYZus{}i\PYZus{}nodes}\PY{p}{:}
+            \PY{n}{total\PYZus{}activated} \PY{o}{+}\PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{i}\PY{p}{)}
+            \PY{n}{actives}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{total\PYZus{}activated}\PY{p}{)}
+        \PY{n}{seeds\PYZus{}data}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{actives}\PY{p}{)}
+
+    \PY{n}{max\PYZus{}len} \PY{o}{=} \PY{n+nb}{max}\PY{p}{(}\PY{p}{[}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x}\PY{p}{)} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{seeds\PYZus{}data}\PY{p}{]}\PY{p}{)}
+    \PY{k}{for} \PY{n}{d} \PY{o+ow}{in} \PY{n}{seeds\PYZus{}data}\PY{p}{:}
+        \PY{n}{diff} \PY{o}{=} \PY{n}{max\PYZus{}len} \PY{o}{\PYZhy{}} \PY{n+nb}{len}\PY{p}{(}\PY{n}{d}\PY{p}{)}
+        \PY{k}{while} \PY{n}{diff} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{:}
+            \PY{n}{d}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{d}\PY{p}{[}\PY{n+nb}{len}\PY{p}{(}\PY{n}{d}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+            \PY{n}{diff} \PY{o}{\PYZhy{}}\PY{o}{=} \PY{l+m+mi}{1}
+
+    \PY{n}{x} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{max\PYZus{}len}\PY{p}{)}
+    \PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{seeds\PYZus{}data}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{c}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{r}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{seeds\PYZus{}data}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{c}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{b}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{seeds\PYZus{}data}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,} \PY{n}{c}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{k}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{seeds\PYZus{}data}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{,} \PY{n}{c}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{g}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Timestep}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of active nodes (cumulative)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}yticks}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mf}{3.5}\PY{o}{*}\PY{n}{num\PYZus{}seeds}\PY{p}{,} \PY{n}{step}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{)}\PY{p}{)}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Time evolution of activation in Independent Cascade models}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{10}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{50}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{100}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{250}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+    \PY{n}{fig}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Barabasi\PYZhy{}Albert by Seed Nodes}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{seed\PYZus{}spread}\PY{p}{(}\PY{n}{barabasi\PYZus{}albert}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Barabasi-Albert by Seed Nodes
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/Users/rajshrimali/anaconda3/lib/python3.7/site-
+packages/ipykernel\_launcher.py:36: UserWarning: Matplotlib is currently using
+module://ipykernel.pylab.backend\_inline, which is a non-GUI backend, so cannot
+show the figure.
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_42_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SBM by Seed Nodes}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{seed\PYZus{}spread}\PY{p}{(}\PY{n}{sbm}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+SBM by Seed Nodes
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/Users/rajshrimali/anaconda3/lib/python3.7/site-
+packages/ipykernel\_launcher.py:36: UserWarning: Matplotlib is currently using
+module://ipykernel.pylab.backend\_inline, which is a non-GUI backend, so cannot
+show the figure.
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_43_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{linear-threshold-model}{%
+\subsubsection{Linear Threshold Model}\label{linear-threshold-model}}
+
+    \hypertarget{generalized-threshold}{%
+\paragraph{Generalized Threshold}\label{generalized-threshold}}
+
+The generalized threshold model is a receiver-centric model, in which a
+node gets activated only if some function of its neighbors' activations
+exceeds its own threshold. Mathematically, for a node \(v\) with
+threshold \(\theta_v\), if
+
+\[ f(n^{a(t)}(v)) \ge \theta_v\] at time t where \(n^{a(t)}(v)\) are the
+neighbors of v that are activated, then at time t+1, v will be an
+activated node. In the context of threshold models, the term
+\(\it neighbors\) of \(v\) refers to the all nodes with edges pointing
+in to \(v\). Furthermore, since it takes only one time step for a node's
+activation to influence another node's activation, we call the model
+implemented here \(\it synchronous\).
+
+The two main restrictions that f is commonly subjected to are
+monotonicity and submodularity.
+
+We assume monotonicity for activation. Simply put, once a node is
+activated, it never becomes deactivated.
+
+Submodularity implies that as the numbers of influential neighbors of v
+increases, the incremental gain in \(f\) decreases. It can be even more
+briefly summarized as diminishing returns.
+
+Different functions are the basis for different threshold models.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{abc} \PY{k+kn}{import} \PY{n}{ABC}\PY{p}{,} \PY{n}{abstractmethod}
+\PY{k}{class} \PY{n+nc}{GeneralizedThreshold}\PY{p}{(}\PY{n}{ABC}\PY{p}{)}\PY{p}{:}
+
+    \PY{n+nd}{@abstractmethod}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{graph}\PY{p}{,} \PY{n}{seed\PYZus{}nodes}\PY{p}{,} \PY{n}{thresholds}\PY{o}{=}\PY{k+kc}{None}\PY{p}{,} \PY{n}{weights}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+        \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Helper for subclasses constructor. Initializes everything as appropriate.}
+\PY{l+s+sd}{        }
+\PY{l+s+sd}{        Parameters}
+\PY{l+s+sd}{        \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{        graph: graph\PYZhy{}tool graph}
+\PY{l+s+sd}{        seed\PYZus{}nodes: nodes that are first activated}
+\PY{l+s+sd}{        thresholds: The individual threshold for each node. Passed in as a VertexPropertyMap.}
+\PY{l+s+sd}{        weights: The weight of each edge in a graph. Passed in as an EdgePropertyMap.}
+\PY{l+s+sd}{        }
+\PY{l+s+sd}{        \PYZdq{}\PYZdq{}\PYZdq{}}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{g} \PY{o}{=} \PY{n}{Graph}\PY{p}{(}\PY{n}{graph}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}directed}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Ensure every node that is initially active belongs to the graph.}
+        \PY{k}{for} \PY{n}{node} \PY{o+ow}{in} \PY{n}{seed\PYZus{}nodes}\PY{p}{:}
+            \PY{k}{if} \PY{n}{node} \PY{o+ow}{not} \PY{o+ow}{in} \PY{n}{graph}\PY{o}{.}\PY{n}{vertices}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+                \PY{k}{raise} \PY{n+ne}{Exception}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Seed node }\PY{l+s+si}{\PYZob{}node\PYZcb{}}\PY{l+s+s2}{ not in graph}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{active\PYZus{}nodes} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{active\PYZus{}nodes}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{seed\PYZus{}nodes}\PY{p}{)} \PY{c+c1}{\PYZsh{} at time t = 0, only seed nodes are active}
+
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{thresholds} \PY{o}{=} \PY{n}{thresholds}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{weights} \PY{o}{=} \PY{n}{weights}
+
+        
+            
+
+    
+    \PY{k}{def} \PY{n+nf}{set\PYZus{}random\PYZus{}thresholds}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+        \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Helper method for randomly assigning thresholds to nodes \PYZdq{}\PYZdq{}\PYZdq{}}
+
+        \PY{n}{thresholds} \PY{o}{=} \PY{p}{[}\PY{n}{random}\PY{o}{.}\PY{n}{random}\PY{p}{(}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{g}\PY{o}{.}\PY{n}{num\PYZus{}vertices}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{]}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{thresholds} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{g}\PY{o}{.}\PY{n}{new\PYZus{}vertex\PYZus{}property}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{double}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{vals}\PY{o}{=}\PY{n}{thresholds}\PY{p}{)}
+    
+    \PY{k}{def} \PY{n+nf}{set\PYZus{}random\PYZus{}weights}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+        \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{} Helper method for randomly assigning weights between edges \PYZdq{}\PYZdq{}\PYZdq{}}
+
+        \PY{n}{weights} \PY{o}{=} \PY{p}{[}\PY{n}{random}\PY{o}{.}\PY{n}{random}\PY{p}{(}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{g}\PY{o}{.}\PY{n}{num\PYZus{}edges}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{]}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{weights} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{g}\PY{o}{.}\PY{n}{new\PYZus{}edge\PYZus{}property}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{double}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{vals}\PY{o}{=}\PY{n}{weights}\PY{p}{)}
+
+
+    
+
+    \PY{k}{def} \PY{n+nf}{diffuse}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{steps}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+        \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Diffuses information for specified number of steps.}
+\PY{l+s+sd}{        If steps is not provided, then diffusion happens until no new activation takes place.}
+
+\PY{l+s+sd}{        Parameters}
+\PY{l+s+sd}{        \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{        steps: The number of steps to diffuse for.}
+
+\PY{l+s+sd}{        \PYZdq{}\PYZdq{}\PYZdq{}}
+
+        \PY{n}{new\PYZus{}activations} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1} \PY{c+c1}{\PYZsh{} dummy to start things off}
+
+        \PY{n}{iteration} \PY{o}{=} \PY{l+m+mi}{0} \PY{c+c1}{\PYZsh{} number of steps run so far}
+
+        \PY{k}{while} \PY{n}{new\PYZus{}activations} \PY{o}{!=} \PY{l+m+mi}{0}\PY{p}{:}
+
+            \PY{k}{if} \PY{n}{steps} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None} \PY{o+ow}{and} \PY{n}{iteration} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{steps}\PY{p}{:}
+                \PY{k}{break}
+            \PY{k}{else}\PY{p}{:}
+                \PY{n}{iteration} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+            
+            \PY{n}{new\PYZus{}activations} \PY{o}{=} \PY{l+m+mi}{0} \PY{c+c1}{\PYZsh{} Reset counter for new timestep}
+
+            \PY{n}{prev\PYZus{}active} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{active\PYZus{}nodes}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{c+c1}{\PYZsh{} Nodes that were active (not activated!!!) at time t\PYZhy{}1}
+
+            \PY{n}{now\PYZus{}active} \PY{o}{=} \PY{p}{[}\PY{p}{]} \PY{c+c1}{\PYZsh{} Nodes that will become active in this timestep}
+
+            \PY{k}{for} \PY{n}{node} \PY{o+ow}{in} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{g}\PY{o}{.}\PY{n}{vertices}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+                \PY{k}{if} \PY{n}{node} \PY{o+ow}{in} \PY{n}{prev\PYZus{}active}\PY{p}{:}
+                    \PY{k}{continue}
+                \PY{k}{elif} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{threshold\PYZus{}function}\PY{p}{(}\PY{n}{node}\PY{p}{)} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{thresholds}\PY{p}{[}\PY{n}{node}\PY{p}{]}\PY{p}{:}
+                    \PY{n}{now\PYZus{}active}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{node}\PY{p}{)}
+            
+            \PY{n}{new\PYZus{}activations} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{now\PYZus{}active}\PY{p}{)}
+
+            \PY{k}{for} \PY{n}{prev} \PY{o+ow}{in} \PY{n}{prev\PYZus{}active}\PY{p}{:}
+                \PY{n}{now\PYZus{}active}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{prev}\PY{p}{)}
+            
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{active\PYZus{}nodes}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{now\PYZus{}active}\PY{p}{)}
+        
+
+        \PY{c+c1}{\PYZsh{} Extend active nodes for desired number of steps if activation has already acquiesced}
+        \PY{k}{if} \PY{n}{steps} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None} \PY{o+ow}{and} \PY{n}{iteration} \PY{o}{\PYZlt{}} \PY{n}{steps}\PY{p}{:}
+            \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{iteration}\PY{p}{,} \PY{n}{steps}\PY{p}{)}\PY{p}{:}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{active\PYZus{}nodes}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{active\PYZus{}nodes}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+
+    
+
+    \PY{k}{def} \PY{n+nf}{plot\PYZus{}activations}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+        \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{} Helper function for plotting time evolution of activation\PYZdq{}\PYZdq{}\PYZdq{}}
+
+        \PY{n}{num\PYZus{}activations} \PY{o}{=} \PY{p}{[}\PY{n+nb}{len}\PY{p}{(}\PY{n}{activated}\PY{p}{)} \PY{k}{for} \PY{n}{activated} \PY{o+ow}{in} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{active\PYZus{}nodes}\PY{p}{]}
+
+        \PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{num\PYZus{}activations}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{num\PYZus{}activations}\PY{p}{)}
+        \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Timestep}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of Active Nodes}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Time evolution of activation in network}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{fig}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+
+    
+    \PY{k}{def} \PY{n+nf}{get\PYZus{}activated\PYZus{}nodes}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+        \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{active\PYZus{}nodes}
+
+
+
+                
+
+    \PY{n+nd}{@abstractmethod}
+    \PY{k}{def} \PY{n+nf}{threshold\PYZus{}function}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{node}\PY{p}{)}\PY{p}{:}
+        \PY{k}{pass}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{linear-threshold}{%
+\paragraph{Linear Threshold}\label{linear-threshold}}
+
+The Linear Threshold model works on the principle that a node is
+activated if the weighted sum of the activations of its neighbors
+exceeds its own unique threshold. For a node \(v\), with a threshold
+\(\theta_v\), if \(\Sigma_{u \in n^a(v)} w_{u,v} \ge \theta_v\) at time
+t where \(n^a(v)\) are the neighbors of v that are activated, then at
+time t+1, v will be an activated node.
+
+One of the benefits of the Linear Threshold is that it is simple and
+reasonably reflective of reality. Individuals are influenced by those
+around them. Each individual may have a different degree of
+susceptibility to influence. And more importantly, each individual
+generally has people who they trust or are influenced more by. The
+weighted sum of all neighbors captures this essence.
+
+Linear Threshold is the most commonly implemented predictive model
+alongside the Independent Cascade model. The independent cascade model
+is sender-centric (i.e.~diffusion is from the perspective of the node
+already activated). The Linear Threshold model is receiver-centric
+(i.e.~node currently inactive but has the potential to be activated).
+Furthermore, in the independent cascade model, each node only gets one
+shot at activating its neighbors. However, in the Linear Threshold
+model, an active node can play a part in activating its neighbor at any
+timestep.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{class} \PY{n+nc}{LinearThreshold}\PY{p}{(}\PY{n}{GeneralizedThreshold}\PY{p}{)}\PY{p}{:}
+
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{graph}\PY{p}{,} \PY{n}{seed\PYZus{}nodes}\PY{p}{,} \PY{n}{thresholds}\PY{o}{=}\PY{k+kc}{None}\PY{p}{,} \PY{n}{weights}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+        \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{} Constructor for LT.}
+\PY{l+s+sd}{        Randomly assigns thresholds and weights if none are provided}
+\PY{l+s+sd}{        \PYZdq{}\PYZdq{}\PYZdq{}}
+        \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n}{graph}\PY{p}{,} \PY{n}{seed\PYZus{}nodes}\PY{p}{,} \PY{n}{thresholds}\PY{p}{,} \PY{n}{weights}\PY{p}{)}
+
+        \PY{k}{if} \PY{n}{thresholds} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{:}
+            \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{set\PYZus{}random\PYZus{}thresholds}\PY{p}{(}\PY{p}{)}
+        
+        \PY{k}{if} \PY{n}{weights} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{:}
+            \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{set\PYZus{}random\PYZus{}weights}\PY{p}{(}\PY{p}{)}
+
+    
+
+
+    \PY{k}{def} \PY{n+nf}{threshold\PYZus{}function}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{node}\PY{p}{)}\PY{p}{:}
+        \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{} The threshold function for the Linear Threshold model.}
+
+\PY{l+s+sd}{        Parameters}
+\PY{l+s+sd}{        \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{        node: The node for which the activation is being calculated}
+
+\PY{l+s+sd}{        Returns}
+\PY{l+s+sd}{        \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{        normalized: An activation value between 0 and 1 that will be compared against the threshold of the node}
+\PY{l+s+sd}{        \PYZdq{}\PYZdq{}\PYZdq{}}
+
+        \PY{n}{active\PYZus{}neighbors} \PY{o}{=} \PY{p}{[}\PY{n}{neighbor} \PY{k}{for} \PY{n}{neighbor} \PY{o+ow}{in} \PY{n}{node}\PY{o}{.}\PY{n}{in\PYZus{}neighbors}\PY{p}{(}\PY{p}{)} \PY{k}{if} \PY{n}{neighbor} \PY{o+ow}{in} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{active\PYZus{}nodes}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}
+
+        \PY{n}{total} \PY{o}{=} \PY{p}{[}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{weights}\PY{p}{[}\PY{n}{edge}\PY{p}{]} \PY{k}{for} \PY{n}{edge} \PY{o+ow}{in} \PY{n}{node}\PY{o}{.}\PY{n}{in\PYZus{}edges}\PY{p}{(}\PY{p}{)}\PY{p}{]}
+        \PY{n}{total} \PY{o}{=} \PY{n+nb}{sum}\PY{p}{(}\PY{n}{total}\PY{p}{)} \PY{c+c1}{\PYZsh{} total weight of neighbors}
+
+        \PY{k}{if} \PY{n}{total} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+            \PY{k}{return} \PY{l+m+mi}{0}
+
+        \PY{n}{activation} \PY{o}{=} \PY{l+m+mi}{0}
+        \PY{k}{for} \PY{n}{a} \PY{o+ow}{in} \PY{n}{active\PYZus{}neighbors}\PY{p}{:}
+            \PY{n}{activation} \PY{o}{+}\PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{weights}\PY{p}{[}\PY{n}{g}\PY{o}{.}\PY{n}{edge}\PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{n}{node}\PY{p}{)}\PY{p}{]} \PY{c+c1}{\PYZsh{} weight of activated neighbors}
+
+        
+        \PY{c+c1}{\PYZsh{} Normalize activation}
+        \PY{n}{normalized} \PY{o}{=} \PY{n}{activation} \PY{o}{/} \PY{n}{total}
+        \PY{k}{return} \PY{n}{normalized}
+            
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{majority-threshold}{%
+\paragraph{Majority Threshold}\label{majority-threshold}}
+
+What if an individual only adopts a new product (aka becomes activated)
+only if half or more of his connections adopt the product. This is the
+basis for the majority threshold in which the threshold for every node
+is uniformly set to be 0.5. The threshold function calculates the number
+of active neighbors and normalizes it using the total number of
+neighbors.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{class} \PY{n+nc}{MajorityThreshold}\PY{p}{(}\PY{n}{GeneralizedThreshold}\PY{p}{)}\PY{p}{:}
+
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{graph}\PY{p}{,} \PY{n}{seed\PYZus{}nodes}\PY{p}{,} \PY{n}{thresholds}\PY{o}{=}\PY{k+kc}{None}\PY{p}{,} \PY{n}{weights}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n}{graph}\PY{p}{,} \PY{n}{seed\PYZus{}nodes}\PY{p}{,} \PY{n}{thresholds}\PY{p}{,} \PY{n}{weights}\PY{p}{)}
+
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{thresholds} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{g}\PY{o}{.}\PY{n}{new\PYZus{}vertex\PYZus{}property}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{double}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{val}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{)}
+
+    
+    \PY{k}{def} \PY{n+nf}{threshold\PYZus{}function}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{node}\PY{p}{)}\PY{p}{:}
+        \PY{n}{num\PYZus{}active\PYZus{}neighbors} \PY{o}{=} \PY{l+m+mi}{0}
+        \PY{n}{neighbors} \PY{o}{=} \PY{n}{node}\PY{o}{.}\PY{n}{in\PYZus{}neighbors}\PY{p}{(}\PY{p}{)}
+        \PY{k}{if} \PY{n}{node}\PY{o}{.}\PY{n}{in\PYZus{}degree}\PY{p}{(}\PY{p}{)} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+            \PY{k}{return} \PY{l+m+mi}{0}
+        \PY{k}{else}\PY{p}{:}
+            \PY{k}{for} \PY{n}{neighbor} \PY{o+ow}{in} \PY{n}{neighbors}\PY{p}{:}
+                \PY{k}{if} \PY{n}{neighbor} \PY{o+ow}{in} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{active\PYZus{}nodes}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{:}
+                    \PY{n}{num\PYZus{}active\PYZus{}neighbors} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+            
+            \PY{k}{return} \PY{n}{num\PYZus{}active\PYZus{}neighbors} \PY{o}{/} \PY{n}{node}\PY{o}{.}\PY{n}{in\PYZus{}degree}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{unanimous-threshold}{%
+\paragraph{Unanimous Threshold}\label{unanimous-threshold}}
+
+A unanimous threshold is an even more specific case where a user only
+adopts a piece of information if ALL of his neighbors have adopted it.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{class} \PY{n+nc}{UnanimousThreshold}\PY{p}{(}\PY{n}{GeneralizedThreshold}\PY{p}{)}\PY{p}{:}
+
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{graph}\PY{p}{,} \PY{n}{seed\PYZus{}nodes}\PY{p}{,} \PY{n}{thresholds}\PY{o}{=}\PY{k+kc}{None}\PY{p}{,} \PY{n}{weights}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n}{graph}\PY{p}{,} \PY{n}{seed\PYZus{}nodes}\PY{p}{,} \PY{n}{thresholds}\PY{p}{,} \PY{n}{weights}\PY{p}{)}
+
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{thresholds} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{g}\PY{o}{.}\PY{n}{new\PYZus{}vertex\PYZus{}property}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{double}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{val}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+    
+    \PY{k}{def} \PY{n+nf}{threshold\PYZus{}function}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{node}\PY{p}{)}\PY{p}{:}
+        \PY{n}{num\PYZus{}active\PYZus{}neighbors} \PY{o}{=} \PY{l+m+mi}{0}
+        \PY{n}{neighbors} \PY{o}{=} \PY{n}{node}\PY{o}{.}\PY{n}{in\PYZus{}neighbors}\PY{p}{(}\PY{p}{)}
+        \PY{k}{if} \PY{n}{node}\PY{o}{.}\PY{n}{in\PYZus{}degree}\PY{p}{(}\PY{p}{)} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+            \PY{k}{return} \PY{l+m+mi}{0}
+        \PY{k}{else}\PY{p}{:}
+            \PY{k}{for} \PY{n}{neighbor} \PY{o+ow}{in} \PY{n}{neighbors}\PY{p}{:}
+                \PY{k}{if} \PY{n}{neighbor} \PY{o+ow}{in} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{active\PYZus{}nodes}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{:}
+                    \PY{n}{num\PYZus{}active\PYZus{}neighbors} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+            
+            \PY{k}{return} \PY{n}{num\PYZus{}active\PYZus{}neighbors} \PY{o}{/} \PY{n}{node}\PY{o}{.}\PY{n}{in\PYZus{}degree}\PY{p}{(}\PY{p}{)}
+                
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{testing-performance-of-different-threshold-models}{%
+\paragraph{Testing performance of different threshold
+models}\label{testing-performance-of-different-threshold-models}}
+
+We want to compare how many total activations each of these models can
+achieve. We adopt the standard practice of the threshold being sampled
+from the uniform distribution between 0 and 1. Since the price\_network
+is unweighted, we randomly select the weights in the same way. When
+testing on a real social network, weights can probably be inferred or
+learned using the frequency of communication between two nodes.
+
+To test, we randomly select 50 nodes (5\% of the nodes in the
+Barabasi-Albert graph) from the graph to activate. The diffusion then
+takes place and the results are plotted below.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Creating the graph}
+\PY{n}{g} \PY{o}{=} \PY{n}{barabasi\PYZus{}albert}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+\PY{n}{num\PYZus{}vertices} \PY{o}{=} \PY{n}{g}\PY{o}{.}\PY{n}{num\PYZus{}vertices}\PY{p}{(}\PY{p}{)} \PY{c+c1}{\PYZsh{} n = 1000}
+\PY{n}{num\PYZus{}edges} \PY{o}{=} \PY{n}{g}\PY{o}{.}\PY{n}{num\PYZus{}edges}\PY{p}{(}\PY{p}{)} \PY{c+c1}{\PYZsh{}1997}
+
+
+\PY{n}{num\PYZus{}seeds} \PY{o}{=} \PY{l+m+mi}{50}
+
+\PY{n}{seed\PYZus{}nodes} \PY{o}{=} \PY{n}{random}\PY{o}{.}\PY{n}{choices}\PY{p}{(}\PY{p}{[}\PY{n}{n} \PY{k}{for} \PY{n}{n} \PY{o+ow}{in} \PY{n}{g}\PY{o}{.}\PY{n}{vertices}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{p}{,} \PY{n}{k}\PY{o}{=}\PY{n}{num\PYZus{}seeds}\PY{p}{)}
+\PY{n}{lt} \PY{o}{=} \PY{n}{LinearThreshold}\PY{p}{(}\PY{n}{g}\PY{p}{,} \PY{n}{seed\PYZus{}nodes}\PY{p}{)}
+\PY{n}{mt} \PY{o}{=} \PY{n}{MajorityThreshold}\PY{p}{(}\PY{n}{g}\PY{p}{,} \PY{n}{seed\PYZus{}nodes}\PY{p}{)}
+\PY{n}{ut} \PY{o}{=} \PY{n}{UnanimousThreshold}\PY{p}{(}\PY{n}{g}\PY{p}{,} \PY{n}{seed\PYZus{}nodes}\PY{p}{)}
+\PY{n}{lt}\PY{o}{.}\PY{n}{diffuse}\PY{p}{(}\PY{n}{steps}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}
+\PY{n}{mt}\PY{o}{.}\PY{n}{diffuse}\PY{p}{(}\PY{n}{steps}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}
+\PY{n}{ut}\PY{o}{.}\PY{n}{diffuse}\PY{p}{(}\PY{n}{steps}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}
+
+\PY{n}{lt\PYZus{}active} \PY{o}{=} \PY{p}{[}\PY{n+nb}{len}\PY{p}{(}\PY{n}{i}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{lt}\PY{o}{.}\PY{n}{get\PYZus{}activated\PYZus{}nodes}\PY{p}{(}\PY{p}{)}\PY{p}{]}
+\PY{n}{mt\PYZus{}active} \PY{o}{=} \PY{p}{[}\PY{n+nb}{len}\PY{p}{(}\PY{n}{i}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{mt}\PY{o}{.}\PY{n}{get\PYZus{}activated\PYZus{}nodes}\PY{p}{(}\PY{p}{)}\PY{p}{]}
+\PY{n}{ut\PYZus{}active} \PY{o}{=} \PY{p}{[}\PY{n+nb}{len}\PY{p}{(}\PY{n}{i}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{ut}\PY{o}{.}\PY{n}{get\PYZus{}activated\PYZus{}nodes}\PY{p}{(}\PY{p}{)}\PY{p}{]}
+
+\PY{n}{x} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{11}\PY{p}{)}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{lt\PYZus{}active}\PY{p}{,} \PY{n}{c}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{mt\PYZus{}active}\PY{p}{,} \PY{n}{c}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{ut\PYZus{}active}\PY{p}{,} \PY{n}{c}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{k}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Timestep}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of active nodes (Cumulative)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}yticks}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{110}\PY{p}{,} \PY{n}{step}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Time evolution of activation in Threshold models of networks}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Linear}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Majority}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Unanimous}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/Users/rajshrimali/anaconda3/lib/python3.7/site-
+packages/ipykernel\_launcher.py:30: UserWarning: Matplotlib is currently using
+module://ipykernel.pylab.backend\_inline, which is a non-GUI backend, so cannot
+show the figure.
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_54_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    As can be seen above, the linear threshold is responsible for far more
+activations than the majority threshold and the unanimous threshold.
+This makes perfect sense because the majority threshold and unanimous
+threshold have extremely high requirements for activation.
+
+    \hypertarget{testing-linear-threshold-with-uniform-weight}{%
+\paragraph{Testing Linear Threshold with uniform
+weight}\label{testing-linear-threshold-with-uniform-weight}}
+
+So far, we have randomly sampled weights and thresholds from the Uniform
+distribution between 0 and 1. While it is both a common and sensible
+practice for the thresholds, there is no particular reason to do so for
+weights as well. We can set the same weight of 1 for every edge. The
+weights themselves don't have to be normalized because the
+implementation normalizes the output of the threshold function. For
+comparison purposes, the random weight case is also plotted. Since this
+is highly dependent on the seed nodes, an average number of activations
+for each timestep after 10 runs is plotted instead.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Creating the graph}
+\PY{n}{g} \PY{o}{=} \PY{n}{barabasi\PYZus{}albert}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+\PY{n}{num\PYZus{}vertices} \PY{o}{=} \PY{n}{g}\PY{o}{.}\PY{n}{num\PYZus{}vertices}\PY{p}{(}\PY{p}{)} \PY{c+c1}{\PYZsh{} n = 1000}
+\PY{n}{num\PYZus{}edges} \PY{o}{=} \PY{n}{g}\PY{o}{.}\PY{n}{num\PYZus{}edges}\PY{p}{(}\PY{p}{)} \PY{c+c1}{\PYZsh{}1997}
+
+
+\PY{n}{num\PYZus{}seeds} \PY{o}{=} \PY{l+m+mi}{50}
+\PY{n}{random\PYZus{}activations} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{11}\PY{p}{)}\PY{p}{)}
+\PY{n}{same\PYZus{}weight\PYZus{}activations} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{11}\PY{p}{)}\PY{p}{)}
+\PY{n}{thresholds} \PY{o}{=} \PY{n}{g}\PY{o}{.}\PY{n}{new\PYZus{}vertex\PYZus{}property}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{double}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{vals}\PY{o}{=}\PY{p}{[}\PY{n}{random}\PY{o}{.}\PY{n}{random}\PY{p}{(}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{g}\PY{o}{.}\PY{n}{num\PYZus{}vertices}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{:}
+    \PY{n}{seed\PYZus{}nodes} \PY{o}{=} \PY{n}{random}\PY{o}{.}\PY{n}{choices}\PY{p}{(}\PY{p}{[}\PY{n}{n} \PY{k}{for} \PY{n}{n} \PY{o+ow}{in} \PY{n}{g}\PY{o}{.}\PY{n}{vertices}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{p}{,} \PY{n}{k}\PY{o}{=}\PY{n}{num\PYZus{}seeds}\PY{p}{)}
+    \PY{n}{lt\PYZus{}random} \PY{o}{=} \PY{n}{LinearThreshold}\PY{p}{(}\PY{n}{g}\PY{p}{,} \PY{n}{seed\PYZus{}nodes}\PY{p}{,} \PY{n}{thresholds}\PY{o}{=}\PY{n}{thresholds}\PY{p}{)}
+    \PY{n}{lt\PYZus{}same\PYZus{}weight} \PY{o}{=} \PY{n}{LinearThreshold}\PY{p}{(}\PY{n}{g}\PY{p}{,} \PY{n}{seed\PYZus{}nodes}\PY{p}{,} \PY{n}{thresholds}\PY{o}{=}\PY{n}{thresholds}\PY{p}{,} \PY{n}{weights}\PY{o}{=}\PY{n}{g}\PY{o}{.}\PY{n}{new\PYZus{}edge\PYZus{}property}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{double}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{val}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+
+    \PY{n}{lt\PYZus{}random}\PY{o}{.}\PY{n}{diffuse}\PY{p}{(}\PY{n}{steps}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}
+    \PY{n}{lt\PYZus{}same\PYZus{}weight}\PY{o}{.}\PY{n}{diffuse}\PY{p}{(}\PY{n}{steps}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}
+
+    \PY{n}{lt\PYZus{}random\PYZus{}active} \PY{o}{=} \PY{p}{[}\PY{n+nb}{len}\PY{p}{(}\PY{n}{i}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{lt\PYZus{}random}\PY{o}{.}\PY{n}{get\PYZus{}activated\PYZus{}nodes}\PY{p}{(}\PY{p}{)}\PY{p}{]}
+    \PY{n}{lt\PYZus{}same\PYZus{}weight\PYZus{}active} \PY{o}{=} \PY{p}{[}\PY{n+nb}{len}\PY{p}{(}\PY{n}{i}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{lt\PYZus{}same\PYZus{}weight}\PY{o}{.}\PY{n}{get\PYZus{}activated\PYZus{}nodes}\PY{p}{(}\PY{p}{)}\PY{p}{]}
+    \PY{n}{random\PYZus{}activations} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{vstack}\PY{p}{(}\PY{p}{(}\PY{n}{random\PYZus{}activations}\PY{p}{,} \PY{n}{lt\PYZus{}random\PYZus{}active}\PY{p}{)}\PY{p}{)}
+    \PY{n}{same\PYZus{}weight\PYZus{}activations} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{vstack}\PY{p}{(}\PY{p}{(}\PY{n}{same\PYZus{}weight\PYZus{}activations}\PY{p}{,} \PY{n}{lt\PYZus{}same\PYZus{}weight\PYZus{}active}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{random\PYZus{}activations} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{delete}\PY{p}{(}\PY{n}{random\PYZus{}activations}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{n}{same\PYZus{}weight\PYZus{}activations} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{delete}\PY{p}{(}\PY{n}{same\PYZus{}weight\PYZus{}activations}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+
+\PY{n}{lt\PYZus{}random\PYZus{}active} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{random\PYZus{}activations}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{n}{lt\PYZus{}same\PYZus{}weight\PYZus{}active} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{same\PYZus{}weight\PYZus{}activations}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+
+\PY{n}{x} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{11}\PY{p}{)}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{lt\PYZus{}random\PYZus{}active}\PY{p}{,} \PY{n}{c}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{k}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{lt\PYZus{}same\PYZus{}weight\PYZus{}active}\PY{p}{,} \PY{n}{c}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Timestep}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of active nodes (Cumulative)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}yticks}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{110}\PY{p}{,} \PY{n}{step}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Time evolution of activation in Linear Threshold for different weights}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Random weight}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Identical weight}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/Users/rajshrimali/anaconda3/lib/python3.7/site-
+packages/ipykernel\_launcher.py:39: UserWarning: Matplotlib is currently using
+module://ipykernel.pylab.backend\_inline, which is a non-GUI backend, so cannot
+show the figure.
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_57_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{testing-impact-of-number-of-seed-nodes-in-the-graph}{%
+\paragraph{Testing impact of number of seed nodes in the
+graph}\label{testing-impact-of-number-of-seed-nodes-in-the-graph}}
+
+To observe how the total number of activations may vary with the number
+of initial nodes, we test the range from 1\% (10 nodes) to 10\% (100
+nodes) of the network being activated. Only the linear threshold model
+is used for this exercise.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{g} \PY{o}{=} \PY{n}{barabasi\PYZus{}albert}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+\PY{n}{num\PYZus{}vertices} \PY{o}{=} \PY{n}{g}\PY{o}{.}\PY{n}{num\PYZus{}vertices}\PY{p}{(}\PY{p}{)} \PY{c+c1}{\PYZsh{} n = 1000}
+\PY{n}{num\PYZus{}edges} \PY{o}{=} \PY{n}{g}\PY{o}{.}\PY{n}{num\PYZus{}edges}\PY{p}{(}\PY{p}{)} \PY{c+c1}{\PYZsh{}1997}
+
+\PY{n}{x} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{11}\PY{p}{)}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{12}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{thresholds} \PY{o}{=} \PY{n}{g}\PY{o}{.}\PY{n}{new\PYZus{}vertex\PYZus{}property}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{double}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{vals}\PY{o}{=}\PY{p}{[}\PY{n}{random}\PY{o}{.}\PY{n}{random}\PY{p}{(}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{g}\PY{o}{.}\PY{n}{num\PYZus{}vertices}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+\PY{n}{weights} \PY{o}{=} \PY{n}{g}\PY{o}{.}\PY{n}{new\PYZus{}edge\PYZus{}property}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{double}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{val}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+
+\PY{n}{num\PYZus{}seeds\PYZus{}range} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{n+nb}{int}\PY{p}{(}\PY{n}{num\PYZus{}vertices} \PY{o}{*} \PY{l+m+mf}{0.01}\PY{p}{)}\PY{p}{,} \PY{n+nb}{int}\PY{p}{(}\PY{n}{num\PYZus{}vertices} \PY{o}{*} \PY{l+m+mf}{0.11}\PY{p}{)}\PY{p}{,} \PY{n}{step}\PY{o}{=}\PY{n+nb}{int}\PY{p}{(}\PY{n}{num\PYZus{}vertices} \PY{o}{/} \PY{l+m+mi}{100}\PY{p}{)}\PY{p}{)}
+\PY{n}{seed\PYZus{}nodes\PYZus{}i} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{lt\PYZus{}i} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{num\PYZus{}seeds\PYZus{}range}\PY{p}{:}
+    \PY{n}{seed\PYZus{}nodes} \PY{o}{=} \PY{n}{random}\PY{o}{.}\PY{n}{choices}\PY{p}{(}\PY{p}{[}\PY{n}{n} \PY{k}{for} \PY{n}{n} \PY{o+ow}{in} \PY{n}{g}\PY{o}{.}\PY{n}{vertices}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{p}{,} \PY{n}{k}\PY{o}{=}\PY{n}{i}\PY{p}{)}
+    \PY{n}{seed\PYZus{}nodes\PYZus{}i}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{seed\PYZus{}nodes}\PY{p}{)}
+    \PY{n}{lt} \PY{o}{=} \PY{n}{LinearThreshold}\PY{p}{(}\PY{n}{g}\PY{p}{,} \PY{n}{seed\PYZus{}nodes}\PY{p}{,} \PY{n}{thresholds}\PY{o}{=}\PY{n}{thresholds}\PY{p}{,} \PY{n}{weights}\PY{o}{=}\PY{n}{weights}\PY{p}{)}
+    \PY{n}{lt}\PY{o}{.}\PY{n}{diffuse}\PY{p}{(}\PY{n}{steps}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}
+    \PY{n}{lt\PYZus{}i}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{[}\PY{n+nb}{len}\PY{p}{(}\PY{n}{i}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{lt}\PY{o}{.}\PY{n}{get\PYZus{}activated\PYZus{}nodes}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{lt\PYZus{}i}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+
+
+
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Timestep}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of active nodes (Cumulative)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}yticks}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{210}\PY{p}{,} \PY{n}{step}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Time evolution of activation for varying number of initially infected nodes}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{num\PYZus{}seeds\PYZus{}range}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/Users/rajshrimali/anaconda3/lib/python3.7/site-
+packages/ipykernel\_launcher.py:29: UserWarning: Matplotlib is currently using
+module://ipykernel.pylab.backend\_inline, which is a non-GUI backend, so cannot
+show the figure.
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_59_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    As we can notice, the total number of activations definitely increases
+with the number of initially infected nodes. However, this trivial
+observation belies the fact that the relative proportion of finally
+activated nodes to initially activated nodes does not change
+significantly from 1\% to 10\%. This observations explains why the field
+of \(\textbf{Influence Maximization}\) is so important.
+
+    \hypertarget{influence-maximization}{%
+\paragraph{Influence Maximization}\label{influence-maximization}}
+
+Influence Maximization is the field of trying to analyze which set of
+initially activated nodes maximizes the total number of activations in
+the network. The obvious usecase is marketing. Convincing which group of
+people is most likely going to lead widespread product adoption is the
+key question of most marketing campaigns. With fixed budgets, only a
+limited number of samples maybe distributed. Identifying the target
+users through influence maximization was the primary motivation behind
+the development of the predictive models.
+
+    We can try to use the Linear Threshold model to perform a simple
+experiment about which nodes to target. The first group can be randomly
+selected. The second group can be the nodes with the highest out-degree.
+The reason behind this choice is that these are the nodes that can
+influence the highest number of nodes in a single timestep. They are
+given the same weights and thresholds to control for differences that
+might arise from them.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{g} \PY{o}{=} \PY{n}{barabasi\PYZus{}albert}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+\PY{n}{num\PYZus{}vertices} \PY{o}{=} \PY{n}{g}\PY{o}{.}\PY{n}{num\PYZus{}vertices}\PY{p}{(}\PY{p}{)} \PY{c+c1}{\PYZsh{} n = 1000}
+\PY{n}{num\PYZus{}edges} \PY{o}{=} \PY{n}{g}\PY{o}{.}\PY{n}{num\PYZus{}edges}\PY{p}{(}\PY{p}{)} \PY{c+c1}{\PYZsh{}1997}
+
+
+\PY{n}{num\PYZus{}seeds} \PY{o}{=} \PY{l+m+mi}{50}
+\PY{n}{fixed\PYZus{}thresholds} \PY{o}{=} \PY{n}{g}\PY{o}{.}\PY{n}{new\PYZus{}vertex\PYZus{}property}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{double}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{vals}\PY{o}{=}\PY{p}{[}\PY{n}{random}\PY{o}{.}\PY{n}{random}\PY{p}{(}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{g}\PY{o}{.}\PY{n}{num\PYZus{}vertices}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+
+\PY{n}{seed\PYZus{}nodes\PYZus{}random} \PY{o}{=} \PY{n}{random}\PY{o}{.}\PY{n}{choices}\PY{p}{(}\PY{p}{[}\PY{n}{n} \PY{k}{for} \PY{n}{n} \PY{o+ow}{in} \PY{n}{g}\PY{o}{.}\PY{n}{vertices}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{p}{,} \PY{n}{k}\PY{o}{=}\PY{n}{num\PYZus{}seeds}\PY{p}{)}
+\PY{n}{lt\PYZus{}random} \PY{o}{=} \PY{n}{LinearThreshold}\PY{p}{(}\PY{n}{g}\PY{p}{,} \PY{n}{seed\PYZus{}nodes\PYZus{}random}\PY{p}{,} \PY{n}{thresholds}\PY{o}{=}\PY{n}{fixed\PYZus{}thresholds}\PY{p}{,} \PY{n}{weights}\PY{o}{=}\PY{n}{g}\PY{o}{.}\PY{n}{new\PYZus{}edge\PYZus{}property}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{double}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{val}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{out\PYZus{}degs} \PY{o}{=} \PY{n}{g}\PY{o}{.}\PY{n}{get\PYZus{}out\PYZus{}degrees}\PY{p}{(}\PY{n}{g}\PY{o}{.}\PY{n}{get\PYZus{}vertices}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n}{argsorted} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{argsort}\PY{p}{(}\PY{n}{out\PYZus{}degs}\PY{p}{)}
+\PY{n}{degree\PYZus{}sorted} \PY{o}{=} \PY{n}{g}\PY{o}{.}\PY{n}{get\PYZus{}vertices}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{argsorted}\PY{p}{]}
+\PY{n}{seed\PYZus{}nodes\PYZus{}max\PYZus{}degree} \PY{o}{=} \PY{n}{degree\PYZus{}sorted}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{50}\PY{p}{:}\PY{p}{]}
+\PY{n}{lt\PYZus{}degree} \PY{o}{=} \PY{n}{LinearThreshold}\PY{p}{(}\PY{n}{g}\PY{p}{,} \PY{n}{seed\PYZus{}nodes\PYZus{}max\PYZus{}degree}\PY{p}{,} \PY{n}{thresholds}\PY{o}{=}\PY{n}{fixed\PYZus{}thresholds}\PY{p}{,} \PY{n}{weights}\PY{o}{=}\PY{n}{g}\PY{o}{.}\PY{n}{new\PYZus{}edge\PYZus{}property}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{double}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{val}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{50 Highest degrees of nodes: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{g}\PY{o}{.}\PY{n}{get\PYZus{}out\PYZus{}degrees}\PY{p}{(}\PY{n}{degree\PYZus{}sorted}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{50}\PY{p}{:}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Average degree of nodes in the graph: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{g}\PY{o}{.}\PY{n}{get\PYZus{}out\PYZus{}degrees}\PY{p}{(}\PY{n}{g}\PY{o}{.}\PY{n}{get\PYZus{}vertices}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+
+
+\PY{n}{lt\PYZus{}random}\PY{o}{.}\PY{n}{diffuse}\PY{p}{(}\PY{n}{steps}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}
+\PY{n}{lt\PYZus{}degree}\PY{o}{.}\PY{n}{diffuse}\PY{p}{(}\PY{n}{steps}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}
+
+
+\PY{n}{lt\PYZus{}random\PYZus{}active} \PY{o}{=} \PY{p}{[}\PY{n+nb}{len}\PY{p}{(}\PY{n}{i}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{lt\PYZus{}random}\PY{o}{.}\PY{n}{get\PYZus{}activated\PYZus{}nodes}\PY{p}{(}\PY{p}{)}\PY{p}{]}
+\PY{n}{lt\PYZus{}degree\PYZus{}active} \PY{o}{=} \PY{p}{[}\PY{n+nb}{len}\PY{p}{(}\PY{n}{i}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{lt\PYZus{}degree}\PY{o}{.}\PY{n}{get\PYZus{}activated\PYZus{}nodes}\PY{p}{(}\PY{p}{)}\PY{p}{]}
+
+
+\PY{n}{x} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{11}\PY{p}{)}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{lt\PYZus{}random\PYZus{}active}\PY{p}{,} \PY{n}{c}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{k}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{lt\PYZus{}degree\PYZus{}active}\PY{p}{,} \PY{n}{c}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Timestep}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of active nodes (Cumulative)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}yticks}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{110}\PY{p}{,} \PY{n}{step}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Time evolution of activation in Linear Threshold models of networks}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Random}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Max Degree}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+50 Highest degrees of nodes:  [ 10  10  11  11  11  11  12  12  12  12  13  13
+13  13  13  13  13  14
+  14  14  14  14  15  15  15  15  15  15  15  16  16  16  17  17  18  19
+  20  21  23  24  26  29  29  30  32  36  39  43  45 111]
+Average degree of nodes in the graph:  3.994
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/Users/rajshrimali/anaconda3/lib/python3.7/site-
+packages/ipykernel\_launcher.py:39: UserWarning: Matplotlib is currently using
+module://ipykernel.pylab.backend\_inline, which is a non-GUI backend, so cannot
+show the figure.
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_63_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    As one can notice, simply selecting the nodes with highest degrees does
+not maximize the spread of activation throughout the network. It does
+not even perform as well as random selection. One of the problems might
+be that most of these nodes with high degree are connected to each
+other, thereby limiting the number of unactivated nodes they can
+influence.
+
+Hopefully, this exercise has demonstrated the non-triviality of
+influence maximization and the importance of predictive models like the
+Linear Threshold model in experimenting with the influence maximization.
+
+    \hypertarget{running-lt-on-various-networks}{%
+\paragraph{Running LT on various
+networks}\label{running-lt-on-various-networks}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{graphs} \PY{o}{=} \PY{p}{[}\PY{n}{barabasi\PYZus{}albert}\PY{p}{,} \PY{n}{sbm}\PY{p}{,} \PY{n}{erdos\PYZus{}renyi}\PY{p}{,} \PY{n}{watts\PYZus{}strogtaz}\PY{p}{]}
+\PY{n}{graphs\PYZus{}data} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{num\PYZus{}seeds} \PY{o}{=} \PY{l+m+mi}{50} 
+\PY{n}{num\PYZus{}steps} \PY{o}{=} \PY{l+m+mi}{25}
+\PY{k}{for} \PY{n}{gr} \PY{o+ow}{in} \PY{n}{graphs}\PY{p}{:}
+    \PY{n}{g} \PY{o}{=} \PY{n}{gr}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+    \PY{n}{seed\PYZus{}nodes} \PY{o}{=} \PY{n}{random}\PY{o}{.}\PY{n}{choices}\PY{p}{(}\PY{p}{[}\PY{n}{n} \PY{k}{for} \PY{n}{n} \PY{o+ow}{in} \PY{n}{g}\PY{o}{.}\PY{n}{vertices}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{p}{,} \PY{n}{k}\PY{o}{=}\PY{n}{num\PYZus{}seeds}\PY{p}{)}
+    \PY{n}{lt} \PY{o}{=} \PY{n}{LinearThreshold}\PY{p}{(}\PY{n}{g}\PY{p}{,} \PY{n}{seed\PYZus{}nodes}\PY{p}{)}
+    \PY{n}{lt}\PY{o}{.}\PY{n}{diffuse}\PY{p}{(}\PY{n}{steps}\PY{o}{=}\PY{n}{num\PYZus{}steps}\PY{p}{)}
+    \PY{n}{num\PYZus{}activations} \PY{o}{=} \PY{p}{[}\PY{n+nb}{len}\PY{p}{(}\PY{n}{i}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{lt}\PY{o}{.}\PY{n}{get\PYZus{}activated\PYZus{}nodes}\PY{p}{(}\PY{p}{)}\PY{p}{]}
+    \PY{n}{graphs\PYZus{}data}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{num\PYZus{}activations}\PY{p}{)}
+
+\PY{n}{x} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{num\PYZus{}steps} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{step}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\PY{k}{for} \PY{n}{d} \PY{o+ow}{in} \PY{n}{graphs\PYZus{}data}\PY{p}{:}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{d}\PY{p}{)}
+
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Timestep}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of Activations (Cumulative)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Time evolution of activations in LT model for various networks}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xticks}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{num\PYZus{}steps} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{,}\PY{n}{step}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Barabasi\PYZhy{}Albert}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SBM}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Erdos\PYZhy{}Renyi}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Watts\PYZhy{}Strogaz}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/Users/rajshrimali/anaconda3/lib/python3.7/site-
+packages/ipykernel\_launcher.py:23: UserWarning: Matplotlib is currently using
+module://ipykernel.pylab.backend\_inline, which is a non-GUI backend, so cannot
+show the figure.
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_66_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    As the above plot indicates, running Linear Threshold on the various
+kinds of graphs shows that SBM has many more activations than
+Barabasi-Albert. This makes sense because in SBM edges within
+communities are far more likely than edges between communities. If a
+handful of nodes in a given community are activated, then, owing to the
+high density, the rest of the community will get activated.
+Watts-Strogatz is also a network with high clustering so it is no
+surprise that the final number of activations is many-fold higher than
+Barabasi-Albert. Erdos-Renyi is denser than Barabasi-Albert but is not
+nearly as clustered as SBM or Watts-Strogatz, which explains the
+activations dying out fairly soon.
+
+    \hypertarget{running-majority-and-unanimous-threshold-on-various-graphs}{%
+\paragraph{Running Majority and Unanimous Threshold on various
+graphs}\label{running-majority-and-unanimous-threshold-on-various-graphs}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{graphs} \PY{o}{=} \PY{p}{[}\PY{n}{barabasi\PYZus{}albert}\PY{p}{,} \PY{n}{sbm}\PY{p}{,} \PY{n}{erdos\PYZus{}renyi}\PY{p}{,} \PY{n}{watts\PYZus{}strogtaz}\PY{p}{]}
+\PY{n}{graphs\PYZus{}data} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{num\PYZus{}seeds} \PY{o}{=} \PY{l+m+mi}{50} 
+\PY{n}{num\PYZus{}steps} \PY{o}{=} \PY{l+m+mi}{10}
+\PY{k}{for} \PY{n}{gr} \PY{o+ow}{in} \PY{n}{graphs}\PY{p}{:}
+    \PY{n}{g} \PY{o}{=} \PY{n}{gr}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+    \PY{n}{seed\PYZus{}nodes} \PY{o}{=} \PY{n}{random}\PY{o}{.}\PY{n}{choices}\PY{p}{(}\PY{p}{[}\PY{n}{n} \PY{k}{for} \PY{n}{n} \PY{o+ow}{in} \PY{n}{g}\PY{o}{.}\PY{n}{vertices}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{p}{,} \PY{n}{k}\PY{o}{=}\PY{n}{num\PYZus{}seeds}\PY{p}{)}
+    \PY{n}{mt} \PY{o}{=} \PY{n}{MajorityThreshold}\PY{p}{(}\PY{n}{g}\PY{p}{,} \PY{n}{seed\PYZus{}nodes}\PY{p}{)}
+    \PY{n}{mt}\PY{o}{.}\PY{n}{diffuse}\PY{p}{(}\PY{n}{steps}\PY{o}{=}\PY{n}{num\PYZus{}steps}\PY{p}{)}
+    \PY{n}{num\PYZus{}activations} \PY{o}{=} \PY{p}{[}\PY{n+nb}{len}\PY{p}{(}\PY{n}{i}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{mt}\PY{o}{.}\PY{n}{get\PYZus{}activated\PYZus{}nodes}\PY{p}{(}\PY{p}{)}\PY{p}{]}
+    \PY{n}{graphs\PYZus{}data}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{num\PYZus{}activations}\PY{p}{)}
+
+\PY{n}{x} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{num\PYZus{}steps} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{step}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{15}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\PY{k}{for} \PY{n}{d} \PY{o+ow}{in} \PY{n}{graphs\PYZus{}data}\PY{p}{:}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{d}\PY{p}{)}
+
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Timestep}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of Activations (Cumulative)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Time evolution of activations in MT model for various networks}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xticks}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{num\PYZus{}steps} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{,}\PY{n}{step}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Barabasi\PYZhy{}Albert}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SBM}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Erdos\PYZhy{}Renyi}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Watts\PYZhy{}Strogaz}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/Users/rajshrimali/anaconda3/lib/python3.7/site-
+packages/ipykernel\_launcher.py:23: UserWarning: Matplotlib is currently using
+module://ipykernel.pylab.backend\_inline, which is a non-GUI backend, so cannot
+show the figure.
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_69_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{graphs} \PY{o}{=} \PY{p}{[}\PY{n}{barabasi\PYZus{}albert}\PY{p}{,} \PY{n}{sbm}\PY{p}{,} \PY{n}{erdos\PYZus{}renyi}\PY{p}{,} \PY{n}{watts\PYZus{}strogtaz}\PY{p}{]}
+\PY{n}{graphs\PYZus{}data} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{num\PYZus{}seeds} \PY{o}{=} \PY{l+m+mi}{50} 
+\PY{n}{num\PYZus{}steps} \PY{o}{=} \PY{l+m+mi}{5}
+\PY{k}{for} \PY{n}{gr} \PY{o+ow}{in} \PY{n}{graphs}\PY{p}{:}
+    \PY{n}{g} \PY{o}{=} \PY{n}{gr}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+    \PY{n}{seed\PYZus{}nodes} \PY{o}{=} \PY{n}{random}\PY{o}{.}\PY{n}{choices}\PY{p}{(}\PY{p}{[}\PY{n}{n} \PY{k}{for} \PY{n}{n} \PY{o+ow}{in} \PY{n}{g}\PY{o}{.}\PY{n}{vertices}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{p}{,} \PY{n}{k}\PY{o}{=}\PY{n}{num\PYZus{}seeds}\PY{p}{)}
+    \PY{n}{ut} \PY{o}{=} \PY{n}{UnanimousThreshold}\PY{p}{(}\PY{n}{g}\PY{p}{,} \PY{n}{seed\PYZus{}nodes}\PY{p}{)}
+    \PY{n}{ut}\PY{o}{.}\PY{n}{diffuse}\PY{p}{(}\PY{n}{steps}\PY{o}{=}\PY{n}{num\PYZus{}steps}\PY{p}{)}
+    \PY{n}{num\PYZus{}activations} \PY{o}{=} \PY{p}{[}\PY{n+nb}{len}\PY{p}{(}\PY{n}{i}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{ut}\PY{o}{.}\PY{n}{get\PYZus{}activated\PYZus{}nodes}\PY{p}{(}\PY{p}{)}\PY{p}{]}
+    \PY{n}{graphs\PYZus{}data}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{num\PYZus{}activations}\PY{p}{)}
+
+\PY{n}{x} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{num\PYZus{}steps} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{step}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{15}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\PY{k}{for} \PY{n}{d} \PY{o+ow}{in} \PY{n}{graphs\PYZus{}data}\PY{p}{:}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{d}\PY{p}{)}
+
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Timestep}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of Activations (Cumulative)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Time evolution of activations in UT model for various networks}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xticks}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{num\PYZus{}steps} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{,}\PY{n}{step}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Barabasi\PYZhy{}Albert}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SBM}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Erdos\PYZhy{}Renyi}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Watts\PYZhy{}Strogaz}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/Users/rajshrimali/anaconda3/lib/python3.7/site-
+packages/ipykernel\_launcher.py:23: UserWarning: Matplotlib is currently using
+module://ipykernel.pylab.backend\_inline, which is a non-GUI backend, so cannot
+show the figure.
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_70_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    The above two graphs explain why the linear threshold function is the
+best in modeling general information diffusion in a social network.
+Majority and Unanimous thresholds are probably better suited for
+situations where majority and unanimity are essential features of the
+system (like voting perhaps). SBM and Watts-Strogatz fail to register
+any new activations for the unanimous threshold and only a few for the
+majority threshold. Barabasi-Albert and Erdos-Renyi, on the other hand,
+diffuse activations better owing to the fact that majority or unanimity
+may be easy to achieve for nodes with very few connections.
+
+    \hypertarget{work-distribution}{%
+\section{Work Distribution}\label{work-distribution}}
+
+\begin{itemize}
+\tightlist
+\item
+  Raj worked on creating all the random networks and the SIRS
+  simulations.
+\item
+  Sidharth built the Independent Cascade model, and tested it with
+  different random graphs.
+\item
+  Harsha performed analysis on Linear Threshhold models
+\end{itemize}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
